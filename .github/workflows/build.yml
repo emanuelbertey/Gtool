@@ -19,32 +19,32 @@ jobs:
         include:
           - runner: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            bin: libGtool.so  # <-- Cambiado: G mayúscula
+            bin: libGtool.so
             final_name: godot_gtool.so
 
           - runner: windows-latest
             target: x86_64-pc-windows-msvc
-            bin: Gtool.dll  # <-- Cambiado: G mayúscula
+            bin: Gtool.dll
             final_name: godot_gtool.dll
 
           - runner: macos-latest
             target: x86_64-apple-darwin
-            bin: libGtool.dylib  # <-- Cambiado: G mayúscula
+            bin: libGtool.dylib
             final_name: godot_gtool_x64.dylib
 
           - runner: macos-latest
             target: aarch64-apple-darwin
-            bin: libGtool.dylib  # <-- Cambiado: G mayúscula
+            bin: libGtool.dylib
             final_name: godot_gtool_arm.dylib
 
           - runner: ubuntu-latest
             target: aarch64-linux-android
-            bin: libGtool.so  # <-- Cambiado: G mayúscula
+            bin: libGtool.so
             final_name: libgodot_gtool_arm64.so
 
           - runner: ubuntu-latest
             target: armv7-linux-androideabi
-            bin: libGtool.so  # <-- Cambiado: G mayúscula
+            bin: libGtool.so
             final_name: libgodot_gtool_armv7.so
 
     steps:
@@ -97,22 +97,50 @@ jobs:
 
       - name: Rename binary to final_name
         run: |
+          echo "=== Renombrando binario ==="
+          echo "Target: ${{ matrix.target }}"
+          echo "Bin original: ${{ matrix.bin }}"
+          echo "Final name: ${{ matrix.final_name }}"
+          
+          # Caso especial para Android - buscar cualquier archivo .so
+          if [[ "${{ matrix.target }}" == *"android"* ]]; then
+            echo "Buscando archivos .so para Android..."
+            cd "target/${{ matrix.target }}/release"
+            
+            # Listar todos los archivos primero
+            echo "Contenido del directorio:"
+            find . -type f | sort
+            
+            # Buscar el archivo .so (puede tener cualquier nombre)
+            ANDROID_SO_FILE=$(find . -name "*.so" -type f | head -1)
+            
+            if [ -n "$ANDROID_SO_FILE" ]; then
+              echo "Encontrado archivo Android: $ANDROID_SO_FILE"
+              echo "Renombrando a: ${{ matrix.final_name }}"
+              mv "$ANDROID_SO_FILE" "${{ matrix.final_name }}"
+            else
+              echo "ERROR: No se encontró ningún archivo .so para Android"
+              exit 1
+            fi
+          
           # Windows usa .dll sin 'lib' prefijo
-          if [ "${{ matrix.target }}" = "x86_64-pc-windows-msvc" ]; then
+          elif [ "${{ matrix.target }}" = "x86_64-pc-windows-msvc" ]; then
             if [ -f "target/${{ matrix.target }}/release/Gtool.dll" ]; then
               mv "target/${{ matrix.target }}/release/Gtool.dll" "target/${{ matrix.target }}/release/${{ matrix.final_name }}"
             else
               echo "ERROR: No se encontró Gtool.dll"
               exit 1
             fi
-          # Linux y Android usan lib prefijo
-          elif [[ "${{ matrix.target }}" == *"linux"* ]]; then
+          
+          # Linux desktop (NO Android)
+          elif [[ "${{ matrix.target }}" == *"linux-gnu"* ]]; then
             if [ -f "target/${{ matrix.target }}/release/libGtool.so" ]; then
               mv "target/${{ matrix.target }}/release/libGtool.so" "target/${{ matrix.target }}/release/${{ matrix.final_name }}"
             else
               echo "ERROR: No se encontró libGtool.so"
               exit 1
             fi
+          
           # macOS usa .dylib
           elif [[ "${{ matrix.target }}" == *"darwin"* ]]; then
             if [ -f "target/${{ matrix.target }}/release/libGtool.dylib" ]; then
@@ -121,7 +149,13 @@ jobs:
               echo "ERROR: No se encontró libGtool.dylib"
               exit 1
             fi
+          
+          else
+            echo "ERROR: Target no reconocido: ${{ matrix.target }}"
+            exit 1
           fi
+          
+          echo "Renombre completado exitosamente"
 
       - name: Upload rust binary artifact
         uses: actions/upload-artifact@v4
