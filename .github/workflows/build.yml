@@ -19,33 +19,33 @@ jobs:
         include:
           - runner: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            bin: libgodot_iroh.so
-            final_name: godot_iroh.so
+            bin: libGtool.so  # <-- Cambiado: G mayúscula
+            final_name: godot_gtool.so
 
           - runner: windows-latest
             target: x86_64-pc-windows-msvc
-            bin: godot_iroh.dll
-            final_name: godot_iroh.dll
+            bin: Gtool.dll  # <-- Cambiado: G mayúscula
+            final_name: godot_gtool.dll
 
           - runner: macos-latest
             target: x86_64-apple-darwin
-            bin: libgodot_iroh.dylib
-            final_name: godot_iroh_x64.dylib
+            bin: libGtool.dylib  # <-- Cambiado: G mayúscula
+            final_name: godot_gtool_x64.dylib
 
           - runner: macos-latest
             target: aarch64-apple-darwin
-            bin: libgodot_iroh.dylib
-            final_name: godot_iroh_arm.dylib
+            bin: libGtool.dylib  # <-- Cambiado: G mayúscula
+            final_name: godot_gtool_arm.dylib
 
           - runner: ubuntu-latest
             target: aarch64-linux-android
-            bin: libgodot_iroh.so
-            final_name: libgodot_iroh_arm64.so
+            bin: libGtool.so  # <-- Cambiado: G mayúscula
+            final_name: libgodot_gtool_arm64.so
 
           - runner: ubuntu-latest
             target: armv7-linux-androideabi
-            bin: libgodot_iroh.so
-            final_name: libgodot_iroh_armv7.so
+            bin: libGtool.so  # <-- Cambiado: G mayúscula
+            final_name: libgodot_gtool_armv7.so
 
     steps:
       - uses: actions/checkout@v4
@@ -86,18 +86,55 @@ jobs:
         if: startsWith(matrix.target, 'aarch64-linux-android') || startsWith(matrix.target, 'armv7-linux-androideabi')
         run: cargo ndk -t ${{ matrix.target }} build --release --verbose
 
+      - name: List generated files (debug)
+        run: |
+          echo "=== DEBUG: Archivos generados ==="
+          echo "Buscando en: target/${{ matrix.target }}/release/"
+          ls -la target/${{ matrix.target }}/release/ 2>/dev/null || echo "Directorio no existe aún"
+          echo ""
+          echo "Buscando archivos libGtool*:"
+          find target/ -name "libGtool*" -o -name "Gtool.*" 2>/dev/null || true
+
       - name: Rename binary to final_name
-        run: mv target/${{ matrix.target }}/release/${{ matrix.bin }} target/${{ matrix.target }}/release/${{ matrix.final_name }}
+        run: |
+          # Windows usa .dll sin 'lib' prefijo
+          if [ "${{ matrix.target }}" = "x86_64-pc-windows-msvc" ]; then
+            if [ -f "target/${{ matrix.target }}/release/Gtool.dll" ]; then
+              mv "target/${{ matrix.target }}/release/Gtool.dll" "target/${{ matrix.target }}/release/${{ matrix.final_name }}"
+            else
+              echo "ERROR: No se encontró Gtool.dll"
+              exit 1
+            fi
+          # Linux y Android usan lib prefijo
+          elif [[ "${{ matrix.target }}" == *"linux"* ]]; then
+            if [ -f "target/${{ matrix.target }}/release/libGtool.so" ]; then
+              mv "target/${{ matrix.target }}/release/libGtool.so" "target/${{ matrix.target }}/release/${{ matrix.final_name }}"
+            else
+              echo "ERROR: No se encontró libGtool.so"
+              exit 1
+            fi
+          # macOS usa .dylib
+          elif [[ "${{ matrix.target }}" == *"darwin"* ]]; then
+            if [ -f "target/${{ matrix.target }}/release/libGtool.dylib" ]; then
+              mv "target/${{ matrix.target }}/release/libGtool.dylib" "target/${{ matrix.target }}/release/${{ matrix.final_name }}"
+            else
+              echo "ERROR: No se encontró libGtool.dylib"
+              exit 1
+            fi
+          fi
 
       - name: Upload rust binary artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.final_name }}
-          path: "rust/rust/target/${{ matrix.target }}/release/${{ matrix.final_name }}"
+          path: "target/${{ matrix.target }}/release/${{ matrix.final_name }}"
 
   package:
     runs-on: macos-latest
     needs: build
+    defaults:
+      run:
+        working-directory: ./rust/rust
 
     steps:
       - uses: actions/checkout@v4
@@ -105,29 +142,31 @@ jobs:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
-          path: addons/godot_iroh
+          path: addons/godot_gtool
           merge-multiple: true
 
       - name: Building a macOS universal lib
-        run: lipo -create -output addons/godot_iroh/godot_iroh.dylib addons/godot_iroh/godot_iroh_x64.dylib addons/godot_iroh/godot_iroh_arm.dylib
+        run: lipo -create -output addons/godot_gtool/godot_gtool.dylib addons/godot_gtool/godot_gtool_x64.dylib addons/godot_gtool/godot_gtool_arm.dylib
 
       - name: Remove individual binaries
-        run: rm addons/godot_iroh/godot_iroh_x64.dylib addons/godot_iroh/godot_iroh_arm.dylib
+        run: rm addons/godot_gtool/godot_gtool_x64.dylib addons/godot_gtool/godot_gtool_arm.dylib
 
       - name: Copy license
-        run: cp LICENSE addons/godot_iroh/.
+        run: cp ../LICENSE addons/godot_gtool/.
 
       - name: Create zip archive
         run: |
-          mkdir godot_iroh
-          mv addons godot_iroh/.
-          zip -r godot_iroh.zip godot_iroh
+          cd ..
+          mkdir -p godot_gtool
+          mv rust/rust/addons godot_gtool/.
+          zip -r godot_gtool.zip godot_gtool
+          mv godot_gtool.zip rust/rust/
 
       - name: Upload package artifact
         uses: actions/upload-artifact@v4
         with:
           name: package
-          path: godot_iroh.zip
+          path: "godot_gtool.zip"
 
   release:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -135,6 +174,9 @@ jobs:
     needs: package
     permissions:
       contents: write
+    defaults:
+      run:
+        working-directory: ./rust/rust
 
     steps:
       - uses: actions/checkout@v4
@@ -146,7 +188,7 @@ jobs:
         run: |
           new_version=$(grep '^version =' Cargo.toml | head -n1 | sed -E 's/version = "(.*)"/\1/' | tr -d '\r')
           echo "new_version=$new_version" >> $GITHUB_OUTPUT
-          git show HEAD~1:Cargo.toml > old_Cargo.toml
+          git show HEAD~1:rust/rust/Cargo.toml > old_Cargo.toml
           old_version=$(grep '^version =' old_Cargo.toml | head -n1 | sed -E 's/version = "(.*)"/\1/' | tr -d '\r')
           echo "old_version=$old_version" >> $GITHUB_OUTPUT
           if [ "$new_version" != "$old_version" ]; then
@@ -169,5 +211,5 @@ jobs:
         with:
           tag_name: v${{ steps.version_check.outputs.new_version }}
           generate_release_notes: true
-          files: godot_iroh.zip
+          files: godot_gtool.zip
           draft: true
