@@ -6,12 +6,14 @@ on:
   pull_request:
   workflow_dispatch:
 
-
 jobs:
   build:
     name: Build - ${{ matrix.target }}
     runs-on: ${{ matrix.runner }}
-    continue-on-error: true   # <--- añade esto
+    continue-on-error: true
+    defaults:
+      run:
+        working-directory: ./rust/rust
     strategy:
       matrix:
         include:
@@ -91,7 +93,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.final_name }}
-          path: "target/${{ matrix.target }}/release/${{ matrix.final_name }}"
+          path: "rust/rust/target/${{ matrix.target }}/release/${{ matrix.final_name }}"
 
   package:
     runs-on: macos-latest
