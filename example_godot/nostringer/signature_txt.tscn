@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://dcvho31jdca3"]
+[gd_scene load_steps=2 format=3 uid="uid://dcvho31jdca3"]
 
 [ext_resource type="Script" uid="uid://ctrp2upy4wnld" path="res://example_godot/nostringer/test_nostringer.gd" id="1_4aruv"]
 
@@ -85,6 +85,16 @@ offset_top = 235.0
 offset_right = 437.0
 offset_bottom = 266.0
 text = "origin"
+
+[node name="info_mode" type="Label" parent="." unique_id=290391219]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 319.0
+offset_right = 1033.0
+offset_bottom = 619.0
+text = "Linkability :	No (Unlinkable)
+ Size: 32(n+1) bytes\"
+ Speed : Faster: ( mults)~2n\""
 
 [connection signal="pressed" from="GridContainer/firmar" to="." method="_on_firmar_pressed"]
 [connection signal="pressed" from="GridContainer/comprobar" to="." method="_on_comprobar_pressed"]
