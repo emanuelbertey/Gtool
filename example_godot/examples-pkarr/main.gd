@@ -144,3 +144,8 @@ func _on_crear_pressed() -> void:
 	}
 	save_data()
 	pass # Replace with function body.
+
+
+func _on_button_pressed() -> void:
+	self.queue_free()
+	pass # Replace with function body.

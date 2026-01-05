@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://bdfm405ocjf7f"]
+[gd_scene load_steps=2 format=3 uid="uid://bdfm405ocjf7f"]
 
 [ext_resource type="Script" uid="uid://btq86wqfwdexv" path="res://example_godot/examples-pkarr/key.gd" id="1_up4cr"]
 

@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://dvaaouny8o1mh"]
+[gd_scene format=3 uid="uid://dvaaouny8o1mh"]
 
 [ext_resource type="Script" uid="uid://bt3hp18ktp5oc" path="res://example_godot/maintestv.gd" id="1_6id4g"]
 
-[node name="maintestv" type="Control"]
+[node name="maintestv" type="Control" unique_id=582929655]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

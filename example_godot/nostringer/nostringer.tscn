@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://cap3xmpomw7ah"]
+
+[ext_resource type="Script" uid="uid://c8ep6k3gr8cgg" path="res://example_godot/nostringer/test_nostringer.gd" id="1_r5xut"]
+[ext_resource type="Script" uid="uid://3mwdwjmsric1" path="res://example_godot/nostringer/test_nostringer_group.gd" id="2_1806x"]
+[ext_resource type="Script" uid="uid://d12ijyoi3b34y" path="res://example_godot/nostringer/test_binario.gd" id="3_nwnq2"]
+
+[node name="nostringer" type="Control" unique_id=803865175]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_r5xut")
+
+[node name="grup" type="Control" parent="." unique_id=697814726]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_1806x")
+
+[node name="bin" type="Control" parent="." unique_id=579904622]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("3_nwnq2")

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://v0sked7wrod7"]
+[gd_scene format=3 uid="uid://v0sked7wrod7"]
 
 [ext_resource type="Script" uid="uid://ss765ywvw8a4" path="res://example_godot/menutest.gd" id="1_kw2sm"]
+[ext_resource type="PackedScene" uid="uid://bwlmqs4l40mxf" path="res://example_godot/exit.tscn" id="2_b4xnm"]
 
 [node name="menu" type="Control" unique_id=1146205673]
 layout_mode = 3
@@ -10,6 +11,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_kw2sm")
+
+[node name="VBoxContainer" parent="." unique_id=658975175 instance=ExtResource("2_b4xnm")]
+layout_mode = 0
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1085297530]
 layout_mode = 1
@@ -43,5 +47,20 @@ text = "nostr gift"
 layout_mode = 2
 text = "test with observed"
 
+[node name="pkarr" type="Button" parent="TabContainer" unique_id=439401269]
+layout_mode = 2
+text = "pkarr"
+
+[node name="key" type="Button" parent="TabContainer" unique_id=214177876]
+layout_mode = 2
+text = "key nostr"
+
+[node name="nostronger" type="Button" parent="TabContainer" unique_id=1301472206]
+layout_mode = 2
+text = "nostringer"
+
 [connection signal="pressed" from="TabContainer/nostr gift" to="." method="_on_nostr_gift_pressed"]
 [connection signal="pressed" from="TabContainer/nostr_observer" to="." method="_on_nostr_pressed"]
+[connection signal="pressed" from="TabContainer/pkarr" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="TabContainer/key" to="." method="_on_key_pressed"]
+[connection signal="pressed" from="TabContainer/nostronger" to="." method="_on_nostronger_pressed"]

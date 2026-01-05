@@ -1,0 +1,48 @@
+[gd_scene load_steps=2 format=3 uid="uid://bwlmqs4l40mxf"]
+
+[ext_resource type="Script" uid="uid://bi3agqf2j8dyy" path="res://example_godot/examples-pkarr/v_box_container.gd" id="1_vinbu"]
+
+[node name="VBoxContainer" type="Control" unique_id=658975175]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 927.0
+offset_bottom = 667.0
+script = ExtResource("1_vinbu")
+
+[node name="Window" type="Window" parent="." unique_id=1225395629]
+oversampling_override = 1.0
+position = Vector2i(200, 200)
+size = Vector2i(265, 120)
+visible = false
+unresizable = true
+borderless = true
+
+[node name="ColorRect" type="ColorRect" parent="Window" unique_id=245741602]
+clip_contents = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.5882353, 0.8352941, 1)
+
+[node name="Label" type="Label" parent="Window" unique_id=744031007]
+offset_left = 3.0
+offset_top = 5.0
+offset_right = 43.0
+offset_bottom = 28.0
+
+[node name="GridContainer" type="GridContainer" parent="Window" unique_id=2046459849]
+offset_left = 63.0
+offset_top = 82.0
+offset_right = 208.0
+offset_bottom = 122.0
+columns = 2
+
+[node name="Button2" type="Button" parent="Window/GridContainer" unique_id=36796115]
+layout_mode = 2
+text = "cancelar"
+
+[node name="Button" type="Button" parent="Window/GridContainer" unique_id=1734960459]
+layout_mode = 2
+text = "aceptar"

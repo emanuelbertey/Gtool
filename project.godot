@@ -10,8 +10,9 @@ config_version=5
 
 [application]
 
-config/name="Godot-NT"
+config/name="Gtool"
 run/main_scene="uid://v0sked7wrod7"
+config/auto_accept_quit=false
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="uid://dcvpakna8i04d"
 

@@ -1,12 +1,12 @@
 extends TPeer
 
 
-
-func _ready() -> void:
-	prints(info_ips())
-	prints(_key("peer_2") ," el peer existe")
-	prints(_key("peer2") ," el peer existe")
-	filetraker(_bytes("sample.torrent"))
+#
+#func _ready() -> void:
+	#prints(info_ips())
+	#prints(_key("peer_2") ," el peer existe")
+	#prints(_key("peer2") ," el peer existe")
+	#filetraker(_bytes("sample.torrent"))
 
 func _on_string_format(data: String) -> void:
 	prints(data)

@@ -1,10 +1,9 @@
-[gd_scene format=3 uid="uid://c7iskwgu5aphr"]
+[gd_scene load_steps=3 format=3 uid="uid://c7iskwgu5aphr"]
 
 [ext_resource type="Script" uid="uid://jyq8m6xvaq3t" path="res://example_godot/examples-pkarr/main.gd" id="1_tb2l5"]
-[ext_resource type="Script" uid="uid://bi3agqf2j8dyy" path="res://example_godot/examples-pkarr/v_box_container.gd" id="2_gocnr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yylx1"]
-bg_color = Color(0.26666668, 0.52156866, 0.7254902, 1)
+bg_color = Color(0.1882353, 0.007843138, 0.2, 1)
 
 [node name="main" type="Control" unique_id=1492347608]
 layout_mode = 3
@@ -35,7 +34,9 @@ offset_bottom = 92.0
 columns = 2
 
 [node name="key_nostr" type="Button" parent="GridContainer" unique_id=983901319]
+visible = false
 layout_mode = 2
+disabled = true
 text = "key nostr"
 
 [node name="pkarr" type="Button" parent="GridContainer" unique_id=500583830]
@@ -58,51 +59,15 @@ offset_right = 304.0
 offset_bottom = 138.0
 text = "crear"
 
-[node name="VBoxContainer" type="Control" parent="." unique_id=1064095293]
-layout_mode = 1
-anchors_preset = 0
-offset_right = 927.0
-offset_bottom = 667.0
-script = ExtResource("2_gocnr")
-
-[node name="Window" type="Window" parent="VBoxContainer" unique_id=1919463789]
-oversampling_override = 1.0
-position = Vector2i(200, 200)
-size = Vector2i(265, 120)
-visible = false
-unresizable = true
-borderless = true
-
-[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Window" unique_id=65736558]
-clip_contents = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0.5882353, 0.8352941, 1)
-
-[node name="Label" type="Label" parent="VBoxContainer/Window" unique_id=1052755279]
-offset_left = 3.0
-offset_top = 5.0
-offset_right = 43.0
-offset_bottom = 28.0
-
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/Window" unique_id=360503015]
-offset_left = 63.0
-offset_top = 82.0
-offset_right = 208.0
-offset_bottom = 122.0
-columns = 2
-
-[node name="Button2" type="Button" parent="VBoxContainer/Window/GridContainer" unique_id=1728062255]
-layout_mode = 2
-text = "cancelar"
-
-[node name="Button" type="Button" parent="VBoxContainer/Window/GridContainer" unique_id=835801744]
-layout_mode = 2
-text = "aceptar"
+[node name="Button" type="Button" parent="." unique_id=214895583]
+layout_mode = 0
+offset_left = 954.0
+offset_top = 23.0
+offset_right = 1084.0
+offset_bottom = 78.0
+text = "quit"
 
 [connection signal="pressed" from="GridContainer/key_nostr" to="." method="_on_key_nostr_pressed"]
 [connection signal="pressed" from="GridContainer/pkarr" to="." method="_on_pkarr_pressed"]
 [connection signal="pressed" from="crear" to="." method="_on_crear_pressed"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

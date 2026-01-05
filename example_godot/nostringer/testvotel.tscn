@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b82y2x7vteuoq"]
 
-[ext_resource type="Script" uid="uid://cvpt3oinhtaax" path="res://example_godot/testvotel.gd" id="1_75vhd"]
+[ext_resource type="Script" uid="uid://cvpt3oinhtaax" path="res://example_godot/nostringer/testvotel.gd" id="1_75vhd"]
 
 [node name="testvotel" type="Control" unique_id=430981661]
 layout_mode = 3

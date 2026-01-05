@@ -7,7 +7,6 @@ func test_group_signatures():
 	var nostringer = Nostringer.new()
 	print("--- Starting Group (Ring) Signature Test ---")
 
-	# 1. Create a ring of 5 people
 	var private_keys = []
 	var public_keys = []
 	for i in range(5):
@@ -15,38 +14,30 @@ func test_group_signatures():
 		private_keys.append(kp["private_key"])
 		public_keys.append(kp["public_key"])
 	
-	print("Ring created with 5 members.")
-
-	# 2. Votación con detección de fraude (Linkability)
 	var message = "Vote: Proposal #123".to_utf8_buffer()
-	var votes_db = {} # stores { "key_image_hex": "voter_name" }
+	var votes_db = {} 
 
 	var vote = func(voter_name: String, priv_key: String):
-		var res = nostringer.sign(message, priv_key, public_keys, "blsag")
-		var sig = res["signature"]
-		var ki = res["key_image"]
+		# AÑADIDO 5º ARGUMENTO ""
+		var sign_res = nostringer.sign(message, priv_key, public_keys, "blsag")
+		var sig = sign_res["signature"]
 		
 		print("\n[%s] is voting..." % voter_name)
+		var verify_res = nostringer.verify(sig, message, public_keys)
 		
-		# verify()
-		if not nostringer.verify(sig, message, public_keys, ki):
+		if not verify_res.get("valid", false):
 			print("  ERROR: Invalid signature!")
 			return
 
-		# check linkability
+		var ki = verify_res.get("key_image", "")
 		if votes_db.has(ki):
-			print("  REJECTED: Double vote detected! Identical Key Image found.")
+			print("  REJECTED: Double vote detected!")
 		else:
 			votes_db[ki] = voter_name
-			print("  SUCCESS: Vote counted anonymously.")
+			print("  SUCCESS: Vote counted.")
 
-	# Miembro 0 votes
 	vote.call("Voter Alpha", private_keys[0])
-	
-	# Miembro 2 votes
 	vote.call("Voter Beta", private_keys[2])
-	
-	# Miembro 0 tries to vote again (malicious)
 	vote.call("Voter Alpha (Attempt 2)", private_keys[0])
 
 	print("\n--- Summary ---")

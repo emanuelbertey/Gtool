@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://dcvho31jdca3"]
+
+[ext_resource type="Script" uid="uid://ctrp2upy4wnld" path="res://example_godot/nostringer/test_nostringer.gd" id="1_4aruv"]
+
+[node name="signatura_txt" type="Control" unique_id=730899130]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4aruv")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=571414450]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2557832, 0.3879112, 0.42048192, 1)
+
+[node name="TextEdit" type="TextEdit" parent="." unique_id=1913289094]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 23.0
+offset_right = 444.0
+offset_bottom = 215.0
+
+[node name="GridContainer" type="GridContainer" parent="." unique_id=873226471]
+layout_mode = 0
+offset_left = 41.0
+offset_top = 226.0
+offset_right = 179.0
+offset_bottom = 300.0
+columns = 2
+
+[node name="firmar" type="Button" parent="GridContainer" unique_id=408726190]
+layout_mode = 2
+text = "signature"
+
+[node name="comprobar" type="Button" parent="GridContainer" unique_id=1152067782]
+layout_mode = 2
+text = "verify"
+
+[node name="add ids" type="Button" parent="GridContainer" unique_id=33590688]
+layout_mode = 2
+text = "add ids"
+
+[node name="return img" type="Button" parent="GridContainer" unique_id=411892947]
+layout_mode = 2
+text = "imagen"
+
+[node name="Quit (X)" type="Button" parent="." unique_id=250872511]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.9110001
+anchor_right = 1.0
+anchor_bottom = 0.10700001
+offset_left = 34.527954
+offset_top = 19.0
+offset_right = -29.0
+offset_bottom = -19.336006
+text = "quit"
+
+[node name="sag or blsag" type="CheckButton" parent="." unique_id=334849150]
+layout_mode = 0
+offset_left = 241.0
+offset_top = 229.0
+offset_right = 315.0
+offset_bottom = 260.0
+text = "Sag "
+
+[node name="info" type="Label" parent="." unique_id=1053098333]
+layout_mode = 0
+offset_left = 482.0
+offset_top = 30.0
+offset_right = 974.0
+offset_bottom = 212.0
+
+[node name="origin" type="Button" parent="." unique_id=487151283]
+layout_mode = 0
+offset_left = 384.0
+offset_top = 235.0
+offset_right = 437.0
+offset_bottom = 266.0
+text = "origin"
+
+[connection signal="pressed" from="GridContainer/firmar" to="." method="_on_firmar_pressed"]
+[connection signal="pressed" from="GridContainer/comprobar" to="." method="_on_comprobar_pressed"]
+[connection signal="pressed" from="GridContainer/add ids" to="." method="_on_add_ids_pressed"]
+[connection signal="pressed" from="GridContainer/return img" to="." method="_on_return_img_pressed"]
+[connection signal="pressed" from="Quit (X)" to="." method="_on_quit_x_pressed"]
+[connection signal="toggled" from="sag or blsag" to="." method="_on_sag_or_blsag_toggled"]
+[connection signal="pressed" from="origin" to="." method="_on_origin_pressed"]
