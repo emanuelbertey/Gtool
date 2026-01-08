@@ -22,7 +22,7 @@ thiserror = "1"
 
 
 anyhow = "1.0.68"                                                  # ergonomic error handling with context support (e.g., `anyhow::Result`)
-bytes = "1.3.0"                                                    # for managing and manipulating byte buffers (used in torrent data exchange)
+bytes = "1.11.0"                                                    # for managing and manipulating byte buffers (used in torrent data exchange)
 #clap = { version = "4.0.32", features = ["derive"] }               # command-line argument parser (for building CLI interfaces)
 hex = "0.4.3"                                                      # for hex encoding/decoding (used in info-hash/logging)
 regex = "1"                                                        # regular expressions (e.g., validating tracker URLs or parsing responses)
