@@ -19,3 +19,5 @@ mod nostrn;
 mod nostr_godot;
 mod nostringer_godot;
 mod pkarrgodot;
+mod shamir_godot;
+mod cuckoo_godot;

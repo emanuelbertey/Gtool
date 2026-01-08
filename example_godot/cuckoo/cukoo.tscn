@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://dhyr2ql40qnat"]
+
+[ext_resource type="Script" uid="uid://d3f4kayiwy3ve" path="res://example_godot/cuckoo/test_cuckoo.gd" id="1_2xum4"]
+
+[node name="cukoo" type="Control" unique_id=1745442462]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2xum4")

@@ -45,12 +45,72 @@
 - **ES:** Cifrado en anillo para privacidad de remitente.  
 - **EN:** Ring encryption for sender privacy.
 
+- **ES:** Shamir Secret Sharing: divide secretos o hashes en múltiples partes, ideal para distribuir seguridad.  
+- **EN:** Shamir Secret Sharing: split secrets or hashes into multiple parts, ideal for distributed security.
+
+- **ES:** Cuckoo Filter: almacenamiento de hashes ultra eficiente, reduce el tamaño y permite verificar pertenencia de mensajes o partes de archivos.  
+- **EN:** Cuckoo Filter: ultra-efficient hash storage, reduces size and allows checking membership of messages or file parts.
+
+---
+
+## Ejemplos de uso / Usage Examples
+
+### Cuckoo Filter
+```gdscript
+var cuckoo = CuckooFilterGodot.new()
+cuckoo.init_filter(10000, 16) # Capacidad 10k, huella 16 bits
+
+# Generar y añadir hash / Generate and add hash
+var data = "mensaje_secreto".to_utf8_buffer()
+var h = cuckoo.generate_hash(data)
+cuckoo.add(h)
+
+# Verificar persistencia / Verify persistence
+cuckoo.save_to_file("user://filtros.bin")
+```
+
+### Ring Signature (Privacidad de remitente / Sender privacy)
+```gdscript
+var nostringer = Nostringer.new()
+var message = "voto_secreto".to_utf8_buffer()
+
+# Crear un grupo de claves públicas (el anillo) / Create a group of public keys (the ring)
+var ring = [
+    "pubkey_1_hex",
+    "pubkey_2_hex",
+    "mi_propia_pubkey_hex"
+]
+
+# Firmar de forma anónima dentro del anillo / Sign anonymously within the ring
+# Variante "blsag" permite detectar doble firma sin revelar quién fue
+var result = nostringer.sign(message, "mi_clave_privada_hex", ring, "blsag")
+var sig = result["signature"]
+
+# Verificar / Verify
+var verification = nostringer.verify(sig, message, ring)
+if verification["valid"]:
+    print("Firma válida y anónima. Key Image: ", verification["key_image"])
+```
+
+### Shamir Secret Sharing
+```gdscript
+var shamir = Shamir.new()
+var secret = "mi_clave_secreta".to_utf8_buffer()
+
+# Crear 5 trozos, se necesitan 3 para recuperar / Create 5 shares, 3 needed to recover
+var shares = shamir.create_shares(secret, 5, 3)
+
+# Combinar trozos para recuperar / Combine shares to recover
+var recovered = shamir.combine_shares([shares[0], shares[2], shares[4]])
+print(recovered.get_string_from_utf8())
+```
+
 ---
 
 ## Compatibilidad / Compatibility
 
-- **ES:** Godot 4.6+ en Windows, Linux y macOS.  
-- **EN:** Godot 4.6+ on Windows, Linux, and macOS.
+- **ES:** Godot 4.6+ en Windows, Linux, macOS y Android (ARM64-v8a).  
+- **EN:** Godot 4.6+ on Windows, Linux, macOS, and Android (ARM64-v8a).
 
 ---
 

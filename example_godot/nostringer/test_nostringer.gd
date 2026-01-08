@@ -158,14 +158,13 @@ func _on_firmar_pressed() -> void:
 		blsag_sig = blsag_res["signature"]
 		blsag_ki_sign = blsag_res["key_image"]
 		print("Key Image (from sign): ", blsag_ki_sign)
+		print("Key size (from sign): ", blsag_sig.length())
 		return
 
 	sag_res = nostringer.sign($TextEdit.text.to_utf8_buffer(), kp2["private_key"], ring_pubkeys, "sag")
 	sag_sig = sag_res["signature"]
 	print("SAG Signature length: ", sag_sig.length())
-	
-	
-	pass # Replace with function body.
+
 
 
 func _on_origin_pressed() -> void:
