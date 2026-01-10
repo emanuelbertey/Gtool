@@ -6,12 +6,15 @@ use tokio::runtime::Runtime;
 use tokio::sync::broadcast;
 
 const POW_DIFFICULTY: u8 = 2;
-const N_SECONDS: u64 = 600;
 
 #[derive(GodotClass)]
 #[class(base=Node)]
 pub struct NostrPeer {
     base: Base<Node>,
+    #[export]
+    n_seconds: i64,
+    #[export]
+    n_limit: i64,
     runtime: Arc<Runtime>,
     client: Arc<Mutex<Option<Client>>>,
     shared_keys: Arc<Mutex<Option<Keys>>>,
@@ -25,6 +28,8 @@ impl INode for NostrPeer {
         let runtime = Runtime::new().expect("Failed to create Tokio runtime");
         Self {
             base,
+            n_seconds: 600,
+            n_limit: 10,
             runtime: Arc::new(runtime),
             client: Arc::new(Mutex::new(None)),
             shared_keys: Arc::new(Mutex::new(None)),
@@ -43,6 +48,7 @@ impl NostrPeer {
         let shared_keys_store = self.shared_keys.clone();
         let sender_keys_store = self.sender_keys.clone();
         let notifications_store = self.notifications.clone();
+        let limit = self.n_limit as usize;
 
         let res = runtime.block_on(async move {
             let sk = Keys::parse(&sender_secret).map_err(|e| format!("Invalid sender secret: {}", e))?;
@@ -69,6 +75,7 @@ impl NostrPeer {
 
             let filter = Filter::new()
                 .kind(Kind::GiftWrap)
+                .limit(limit)
                 .pubkey(shared_keys.public_key());
             
             client.subscribe(filter, None).await.map_err(|e| format!("Failed to subscribe: {}", e))?;
@@ -97,6 +104,7 @@ impl NostrPeer {
         let shared_keys_store = self.shared_keys.clone();
         let sender_keys_store = self.sender_keys.clone();
         let notifications_store = self.notifications.clone();
+        let limit = self.n_limit as usize;
 
         let res = runtime.block_on(async move {
             let shared_secret_key = SecretKey::from_str(&shared_key_hex).map_err(|e| format!("Invalid shared key: {}", e))?;
@@ -118,6 +126,7 @@ impl NostrPeer {
 
             let filter = Filter::new()
                 .kind(Kind::GiftWrap)
+                .limit(limit)
                 .pubkey(shared_keys.public_key());
             
             client.subscribe(filter, None).await.map_err(|e| format!("Failed to subscribe: {}", e))?;
@@ -191,7 +200,7 @@ impl NostrPeer {
                                  if let Ok(inner_event) = mostro_unwrap(&shared_keys, *event).await {
                                      let now = Timestamp::now().as_u64();
                                      let msg_time = inner_event.created_at.as_u64();
-                                     if now.saturating_sub(msg_time) > N_SECONDS {
+                                     if now.saturating_sub(msg_time) > self.n_seconds as u64 {
                                          return None;
                                      }
                                      Some(inner_event)

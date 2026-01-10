@@ -27,6 +27,10 @@ func _conect():
 	nostr_peer = NostrPeer.new()
 	add_child(nostr_peer)
 	
+	# cambiemos el timepo esta limitado a 10 mensajes 
+	nostr_peer.n_seconds = 2345566
+	nostr_peer.n_limit =  10
+	
 	# 2. Inicializar como observer (solo lectura)
 	print("Inicializando Observer...")
 	var success = nostr_peer.init_observer(shared_key, relay_url)

@@ -62,28 +62,37 @@ grow_vertical = 2
 color = Color(0, 0.016510928, 0.18438336, 1)
 
 [node name="siwch" type="TabContainer" parent="." unique_id=1761169648]
-layout_mode = 0
-offset_left = 42.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.032
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 78.864
 offset_top = 29.0
-offset_right = 1117.0
-offset_bottom = 616.0
+offset_right = -35.0
+offset_bottom = -32.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_i83a2")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_q0riu")
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_v3ivi")
-current_tab = 0
+current_tab = 2
 tabs_rearrange_group = 1
 
 [node name="relayedit" type="Control" parent="siwch" unique_id=1135704658]
+visible = false
 layout_mode = 2
 script = ExtResource("1_r2swp")
 metadata/_tab_index = 0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="siwch/relayedit" unique_id=1084401151]
-layout_mode = 0
-offset_left = 510.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.47400004
+anchor_right = 0.99000007
+anchor_bottom = 0.97300005
+offset_left = 0.44995117
 offset_top = 12.0
-offset_right = 1064.0
-offset_bottom = 541.0
+offset_right = -0.25012207
+offset_bottom = 0.011962891
 
 [node name="relays" type="Label" parent="siwch/relayedit/ScrollContainer" unique_id=1240547006]
 layout_mode = 2
@@ -93,39 +102,54 @@ text = "RELAYS:
 
 [node name="editerelay" type="LineEdit" parent="siwch/relayedit" unique_id=901749219]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 316.0
-offset_right = -586.0
-offset_bottom = -191.0
+anchors_preset = -1
+anchor_left = 0.009000001
+anchor_top = 0.568
+anchor_right = 0.455
+anchor_bottom = 0.656
+offset_left = 0.3249998
+offset_top = 0.19198608
+offset_right = -0.125
+offset_bottom = 0.26397705
 grow_horizontal = 2
 grow_vertical = 2
 text = "wss://relay.mostro.network"
 placeholder_text = "relay"
 
 [node name="indexrelay" type="LineEdit" parent="siwch/relayedit/editerelay" unique_id=1540858676]
-layout_mode = 0
-offset_left = 2.0
-offset_top = 101.0
-offset_right = 191.0
-offset_bottom = 132.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.004
+anchor_top = 2.061
+anchor_right = 0.39900002
+anchor_bottom = 2.6940002
+offset_left = 0.08399987
+offset_top = 0.0109939575
+offset_right = -0.1210022
+offset_bottom = -0.006011963
 placeholder_text = "select relay number"
 
 [node name="addrelay" type="Button" parent="siwch/relayedit/editerelay" unique_id=751602783]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 0.37
+anchor_bottom = 1.9180001
 offset_left = -2.0
-offset_top = 54.0
-offset_right = 177.0
-offset_bottom = 94.0
+offset_top = 5.0
+offset_right = -0.22999573
+offset_bottom = 0.017997742
 text = "add relay"
 
 [node name="quitrelay" type="Button" parent="siwch/relayedit/editerelay" unique_id=120131109]
-layout_mode = 0
-offset_top = 139.0
-offset_right = 128.0
-offset_bottom = 179.0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 2.8370001
+anchor_right = 0.26700002
+anchor_bottom = 4.112
+offset_top = -0.013000488
+offset_right = 0.106987
+offset_bottom = -22.488007
 text = "quit relay"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="siwch/relayedit" unique_id=1645877098]
@@ -151,26 +175,36 @@ script = ExtResource("2_06f07")
 metadata/_tab_index = 1
 
 [node name="conect 1" type="Button" parent="siwch/peer 1" unique_id=896575510]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.125
+anchor_bottom = 0.061000004
 offset_left = 5.0
 offset_top = 3.0
-offset_right = 134.0
-offset_bottom = 34.0
+offset_right = -0.375
+offset_bottom = 0.08399582
 text = "conectar peer 1"
 
 [node name="TextEdit" type="TextEdit" parent="siwch/peer 1" unique_id=1729566933]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.24700001
+anchor_bottom = 0.565
 offset_left = 9.0
 offset_top = 35.0
-offset_right = 266.0
-offset_bottom = 314.0
+offset_right = 0.4749756
+offset_bottom = -0.13998413
 
 [node name="ScrollContainer" type="ScrollContainer" parent="siwch/peer 1" unique_id=1735562936]
-layout_mode = 0
-offset_left = 377.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.351
+anchor_right = 1.0250001
+anchor_bottom = 1.0
+offset_left = -0.3250122
 offset_top = 27.0
-offset_right = 1079.0
-offset_bottom = 540.0
+offset_right = -22.875122
+offset_bottom = -16.0
 
 [node name="mensaje" type="Label" parent="siwch/peer 1/ScrollContainer" unique_id=1889817786]
 layout_mode = 2
@@ -179,59 +213,81 @@ text = "peer 1
 "
 
 [node name="enviar" type="Button" parent="siwch/peer 1" unique_id=2059936871]
-layout_mode = 0
-offset_left = 43.0
-offset_top = 324.0
-offset_right = 247.0
-offset_bottom = 359.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.040000003
+anchor_top = 0.583
+anchor_right = 0.23
+anchor_bottom = 0.646
+offset_top = -0.14801025
+offset_right = -0.25
+offset_bottom = -0.17602539
 text = "enviar"
 
 [node name="peernsec" type="LineEdit" parent="siwch/peer 1" unique_id=35316916]
-layout_mode = 0
-offset_left = 13.0
-offset_top = 409.0
-offset_right = 613.0
-offset_bottom = 440.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.012
+anchor_top = 0.73600006
+anchor_right = 0.57000005
+anchor_bottom = 0.791
+offset_left = 0.09999943
+offset_top = -0.21603394
+offset_right = 0.24993896
+offset_bottom = 0.20401001
 text = "ea84a9cac94db92c18d9fbf318e9bdb350e9926259ad7b7143a412aefb90fe3c"
 placeholder_text = "nsec"
 
 [node name="peernpub" type="LineEdit" parent="siwch/peer 1" unique_id=871359740]
-layout_mode = 0
-offset_left = 13.0
-offset_top = 437.0
-offset_right = 613.0
-offset_bottom = 468.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.012
+anchor_top = 0.786
+anchor_right = 0.57000005
+anchor_bottom = 0.84200007
+offset_left = 0.09999943
+offset_top = -0.016021729
+offset_right = 0.24993896
+offset_bottom = -0.15203857
 text = "61b9c5f2629e5a380a103088ed00d3a7678d78c6d9635602123e1b6f74311662"
 placeholder_text = "npub"
 
 [node name="peer 2" type="Control" parent="siwch" unique_id=440796518]
-visible = false
 clip_contents = true
 layout_mode = 2
 script = ExtResource("3_35dqd")
 metadata/_tab_index = 2
 
 [node name="conect 2" type="Button" parent="siwch/peer 2" unique_id=173397967]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.125
 offset_left = 5.0
 offset_top = 3.0
-offset_right = 134.0
+offset_right = -0.375
 offset_bottom = 34.0
 text = "conectar peer 2"
 
 [node name="TextEdit" type="TextEdit" parent="siwch/peer 2" unique_id=1476054915]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.24700001
+anchor_bottom = 0.565
 offset_left = 9.0
 offset_top = 35.0
-offset_right = 266.0
-offset_bottom = 314.0
+offset_right = 0.4749756
+offset_bottom = -0.13998413
 
 [node name="ScrollContainer" type="ScrollContainer" parent="siwch/peer 2" unique_id=1665089911]
-layout_mode = 0
-offset_left = 377.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.351
+anchor_right = 1.0250001
+anchor_bottom = 0.9710001
+offset_left = -0.3250122
 offset_top = 27.0
-offset_right = 1079.0
-offset_bottom = 540.0
+offset_right = -22.875122
+offset_bottom = 0.1239624
 
 [node name="mensaje" type="Label" parent="siwch/peer 2/ScrollContainer" unique_id=153229445]
 layout_mode = 2
@@ -248,20 +304,28 @@ offset_bottom = 359.0
 text = "enviar"
 
 [node name="peernsec" type="LineEdit" parent="siwch/peer 2" unique_id=1768704221]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.73700005
+anchor_right = 0.572
+anchor_bottom = 0.79300004
 offset_left = 15.0
-offset_top = 410.0
-offset_right = 615.0
-offset_bottom = 441.0
+offset_top = 0.22796631
+offset_right = 0.099975586
+offset_bottom = 0.09197998
 text = "c20a54bc1e0ad93d39e355d3381ea78660a3c8130d5ec8558f87b3af25073f1f"
 placeholder_text = "nsec"
 
 [node name="peernpub" type="LineEdit" parent="siwch/peer 2" unique_id=69721384]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.78800005
+anchor_right = 0.572
+anchor_bottom = 0.84400004
 offset_left = 15.0
-offset_top = 438.0
-offset_right = 615.0
-offset_bottom = 469.0
+offset_top = -0.12802124
+offset_right = 0.099975586
+offset_bottom = -0.2640381
 text = "329fcca74616424a11020954b1b95e08da4f322801819cb5555ff63a62eba21b"
 placeholder_text = "npub"
 
@@ -273,19 +337,28 @@ script = ExtResource("4_jf82l")
 metadata/_tab_index = 3
 
 [node name="observer" type="Button" parent="siwch/observer" unique_id=678488600]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.074
+anchor_right = 0.119
+anchor_bottom = 0.22800002
 offset_left = 22.0
-offset_top = 41.0
-offset_right = 128.0
-offset_bottom = 127.0
+offset_top = -0.144001
+offset_right = 0.07499695
+offset_bottom = 0.23199463
 text = "observer"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="siwch/observer" unique_id=2052850053]
-layout_mode = 0
-offset_left = 217.0
-offset_top = 44.0
-offset_right = 1068.0
-offset_bottom = 544.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.202
+anchor_top = 0.079
+anchor_right = 1.0
+anchor_bottom = 0.97800004
+offset_left = -0.15000916
+offset_top = 0.0759964
+offset_right = -7.0
+offset_bottom = 0.23199463
 
 [node name="mensaje" type="Label" parent="siwch/observer/ScrollContainer" unique_id=922054544]
 layout_mode = 2
@@ -304,11 +377,15 @@ placeholder_text = "shared_key"
 wrap_mode = 1
 
 [node name="Button" type="Button" parent="." unique_id=1458418847]
-layout_mode = 0
-offset_left = 1019.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.88500005
+anchor_right = 1.0
+anchor_bottom = 0.082
+offset_left = -0.52008057
 offset_top = 5.0
-offset_right = 1143.0
-offset_bottom = 53.0
+offset_right = -9.0
+offset_bottom = -0.13600159
 text = "Quit (X)"
 
 [connection signal="pressed" from="siwch/relayedit/editerelay/addrelay" to="siwch/relayedit" method="_on_addrelay_pressed"]

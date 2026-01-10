@@ -39,6 +39,9 @@ func go_nostrn():
 	nostr_node = NostrNode.new()
 	add_child(nostr_node)
 	
+	nostr_node.n_seconds = 2345566
+	nostr_node.n_limit =  10
+	
 	# 2. Inicializar Cliente
 	print("1. Inicializando cliente...")
 	# Si pasas "" como nsec, generará una nueva identidad
@@ -87,7 +90,7 @@ func go_nostrn():
 	# 6. Configurar Timer para polling
 	# Usamos un timer para no bloquear el main thread en cada frame
 	timer = Timer.new()
-	timer.wait_time = 4.0 # Consultar cada 2 segundos
+	timer.wait_time = 5.0 # Consultar cada 2 segundos
 	timer.connect("timeout", Callable(self, "_on_timer_timeout"))
 	add_child(timer)
 	timer.start()
@@ -125,9 +128,10 @@ func _on_send_pressed() -> void:
 	
 	if thread.is_started():
 		thread.wait_to_finish()
-		thread = Thread.new()
+
+		thread.start(enviar_mrnsaje.bind(msg))
 	else:
-		thread = Thread.new()
+		
 		thread.start(enviar_mrnsaje.bind(msg))
 	
 	#if nostr_node.send_message(msg + str(Time.get_unix_time_from_system())):

@@ -19,6 +19,8 @@ config/icon="uid://dcvpakna8i04d"
 [display]
 
 window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation=6
 
 [rendering]
 

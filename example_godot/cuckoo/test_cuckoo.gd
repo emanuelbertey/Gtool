@@ -1,5 +1,12 @@
 extends Node
 
+
+
+# prueba de 1048576 de hashes 
+# usa solo 2 megas de almacenamiento 
+# contra 32 megas de sha-256
+
+
 func _ready():
 	test_cuckoo_filter()
 
@@ -9,8 +16,8 @@ func test_cuckoo_filter():
 	# 1. Crear instancia
 	var filter = CuckooFilterGodot.new()
 	
-	# 2. Inicializar (capacidad 1000, fingerprint 16 bits)
-	filter.init_filter(10000, 16)
+	# 2. Inicializar (capacidad 1048576, fingerprint 16 bits)
+	filter.init_filter(1048576, 16)
 	print("Filtro inicializado.")
 
 	# 3. Generar y agregar 100 hashes
@@ -75,3 +82,22 @@ func test_cuckoo_filter():
 		print("❌ Error al guardar el filtro.")
 
 	print("--- Test Finalizado ---")
+	
+
+	var errores = 0
+	var valid = 0
+	for i in range(1048576):
+		var data = PackedByteArray()
+		data.append_array(("dato_prueba_%d" % i).to_utf8_buffer())
+		var h = filter.generate_hash(data)
+		if filter.contains(h):
+			if i > 100:
+				errores += 1
+			else:
+				valid += 1
+		else:
+				errores += 1
+
+	print("Errores (Aleatorio mas de 100 ):" , errores)
+	print("Aciertos (antes de 100 mas de 20 ):" , valid)
+		#filter.add(h)

@@ -9,6 +9,12 @@ use std::sync::Mutex;
 #[class(base=Node)]
 pub struct NostrNode {
     base: Base<Node>,
+    #[export]
+    n_seconds: i64,
+    #[export]
+    n_limit: i64,
+    #[export]
+    poll_timeout: i64,
     client: Mutex<Option<NostrClient>>,
 }
 
@@ -21,6 +27,9 @@ impl INode for NostrNode {
     fn init(base: Base<Node>) -> Self {
         Self {
             base,
+            n_seconds: 3600,
+            n_limit: 10,
+            poll_timeout: 2,
             client: Mutex::new(None),
         }
     }
@@ -83,6 +92,8 @@ impl NostrNode {
     pub fn subscribe(&self) -> bool {
         let mut guard = self.client.lock().unwrap();
         if let Some(client) = guard.as_mut() {
+            client.n_seconds = self.n_seconds as u64;
+            client.n_limit = self.n_limit as usize;
             match client.subscribe() {
                 Ok(_) => {
                     godot_print!("NostrNode: Suscripción exitosa");
@@ -124,10 +135,11 @@ impl NostrNode {
     /// Retorna un Array de Dictionaries con keys: "sender", "content", "timestamp"
     #[func]
     pub fn poll_messages(&self) -> Array<VarDictionary> {
-        let guard = self.client.lock().unwrap();
+        let mut guard = self.client.lock().unwrap();
         let mut result_array = Array::new();
 
-        if let Some(client) = guard.as_ref() {
+        if let Some(client) = guard.as_mut() {
+            client.poll_timeout = self.poll_timeout as u64;
             match client.poll_messages() {
                 Ok(messages) => {
                     for msg in messages {

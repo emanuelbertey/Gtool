@@ -17,6 +17,9 @@ pub struct NostrClient {
     runtime: Arc<Runtime>,
     subscription_id: Option<SubscriptionId>,
     notifications: Arc<Mutex<Option<broadcast::Receiver<RelayPoolNotification>>>>,
+    pub n_seconds: u64,
+    pub n_limit: usize,
+    pub poll_timeout: u64,
 }
 
 impl NostrClient {
@@ -57,6 +60,9 @@ impl NostrClient {
             runtime,
             subscription_id: None,
             notifications: Arc::new(Mutex::new(None)),
+            n_seconds: 3600,
+            n_limit: 10,
+            poll_timeout: 2,
         })
     }
 
@@ -97,18 +103,18 @@ impl NostrClient {
     /// Inicia la suscripción para recibir mensajes.
     /// Debe llamarse después de add_relays() y antes de poll_messages().
     pub fn subscribe(&mut self) -> Result<()> {
-        // Fetch messages from the last hour
-        let since = Timestamp::now() - Duration::from_secs(3600);
-         println!("    [DEBUG] time stap debug error: {}",since);
+        // Fetch messages based on n_seconds
         // Filter 1: Messages sent TO me (any kind)
         let filter_to_me = Filter::new()
             .pubkey(self.keys.public_key())
-            .since(3600.into());
+            .limit(self.n_limit)
+            .since(Timestamp::from(Timestamp::now().as_u64().saturating_sub(self.n_seconds)));
             
         // Filter 2: Messages FROM the peer (any kind)
         let filter_from_peer = Filter::new()
             .author(self.peer_pk)
-            .since(3600.into());
+            .limit(self.n_limit)
+            .since(Timestamp::from(Timestamp::now().as_u64().saturating_sub(self.n_seconds)));
 
         println!("      [DEBUG] Suscribiendo a:");
         println!("      - Mensajes para mi: {}", self.keys.public_key().to_bech32()?);
@@ -170,10 +176,10 @@ impl NostrClient {
             }
             
             let notifications = notifications_guard.as_mut().unwrap();
-            let timeout_duration = tokio::time::Duration::from_secs(2);
+            let timeout_duration = tokio::time::Duration::from_secs(self.poll_timeout);
             let deadline = tokio::time::Instant::now() + timeout_duration;
             
-            println!("      [DEBUG] Esperando notificaciones por 2 segundos...");
+            println!("      [DEBUG] Esperando notificaciones por {} segundos...", self.poll_timeout);
             
             // Esperar mensajes hasta el timeout
             loop {

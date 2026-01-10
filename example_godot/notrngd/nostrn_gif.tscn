@@ -33,60 +33,81 @@ metadata/_tab_index = 0
 
 [node name="send" type="Button" parent="TabContainer/CHAT 1" unique_id=864927402]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 198.0
-offset_right = -957.0
-offset_bottom = -388.0
+anchors_preset = -1
+anchor_left = 0.017
+anchor_top = 0.321
+anchor_right = 0.16900001
+anchor_bottom = 0.37100002
+offset_left = 0.41599846
+offset_top = -0.057006836
+offset_right = 0.3119812
+offset_bottom = 0.09298706
 grow_horizontal = 2
 grow_vertical = 2
 text = "enviar msg"
 
 [node name="msg" type="TextEdit" parent="TabContainer/CHAT 1" unique_id=1544553114]
-layout_mode = 0
-offset_left = 21.0
-offset_top = 32.0
-offset_right = 233.0
-offset_bottom = 176.0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.22700001
+anchor_bottom = 0.335
+offset_left = 7.0
+offset_top = 28.0
+offset_right = -28.504028
+offset_bottom = -30.695007
 placeholder_text = "enter text"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/CHAT 1" unique_id=1852681725]
-layout_mode = 0
-offset_left = 456.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.39600003
+anchor_right = 0.81200004
+anchor_bottom = 0.94400007
+offset_left = -0.1920166
 offset_top = 39.0
-offset_right = 898.0
-offset_bottom = 545.0
+offset_right = -37.424072
+offset_bottom = -37.44806
 
 [node name="Label" type="Label" parent="TabContainer/CHAT 1/ScrollContainer" unique_id=1105933333]
 layout_mode = 2
 text = "desde peer 1"
 
 [node name="nsec" type="LineEdit" parent="TabContainer/CHAT 1" unique_id=1807146482]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.462
+anchor_right = 0.53300005
+anchor_bottom = 0.535
 offset_left = 14.0
-offset_top = 285.0
-offset_right = 614.0
-offset_bottom = 330.0
+offset_top = -0.054016113
+offset_right = -0.016052246
+offset_bottom = -0.09500122
 text = "nsec1a2z2njkffkujcxxel0e336dakdgwnynztxkhku2r5sf2a7uslc7q88j0xr"
 placeholder_text = "mi nsec"
 
 [node name="npub" type="LineEdit" parent="TabContainer/CHAT 1" unique_id=1040434356]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.577
+anchor_right = 0.52900004
+anchor_bottom = 0.62700003
 offset_left = 9.0
-offset_top = 356.0
-offset_right = 609.0
-offset_bottom = 387.0
+offset_top = -0.009002686
+offset_right = -0.40808105
+offset_bottom = 0.14099121
 text = "npub1vxuutunznedrszssxzyw6qxn5anc67xxm934vqsj8cdk7ap3ze3qw444pn"
 placeholder_text = "otro npub"
 
 [node name="chat_app" type="Button" parent="TabContainer/CHAT 1" unique_id=935682555]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.656
+anchor_right = 0.11800001
+anchor_bottom = 0.73600006
 offset_left = 11.0
-offset_top = 405.0
-offset_right = 136.0
-offset_bottom = 454.0
+offset_top = 0.24798584
+offset_right = 0.06399536
+offset_bottom = -0.11203003
 text = "run chat"
 
 [node name="CHAT 2" type="Control" parent="TabContainer" unique_id=108273825]
@@ -97,60 +118,81 @@ metadata/_tab_index = 1
 
 [node name="send" type="Button" parent="TabContainer/CHAT 2" unique_id=1925096631]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 47.0
-offset_top = 198.0
-offset_right = -989.0
-offset_bottom = -388.0
+anchors_preset = -1
+anchor_left = 0.041
+anchor_top = 0.321
+anchor_right = 0.141
+anchor_bottom = 0.40300003
+offset_left = -0.23200226
+offset_top = -0.057006836
+offset_right = 0.56799316
+offset_bottom = -19.651016
 grow_horizontal = 2
 grow_vertical = 2
 text = "enviar msg"
 
 [node name="msg" type="TextEdit" parent="TabContainer/CHAT 2" unique_id=2068515958]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.202
+anchor_bottom = 0.28500003
 offset_left = 21.0
 offset_top = 32.0
-offset_right = 233.0
-offset_bottom = 176.0
+offset_right = 0.29599
+offset_bottom = 0.15498352
 placeholder_text = "enter text"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/CHAT 2" unique_id=985747900]
-layout_mode = 0
-offset_left = 456.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.39600003
+anchor_right = 0.78000003
+anchor_bottom = 0.883
+offset_left = -0.1920166
 offset_top = 39.0
-offset_right = 898.0
-offset_bottom = 545.0
+offset_right = -0.5600586
+offset_bottom = 0.18896484
 
 [node name="Label" type="Label" parent="TabContainer/CHAT 2/ScrollContainer" unique_id=923642476]
 layout_mode = 2
 text = "desde peer 2"
 
 [node name="nsec" type="LineEdit" parent="TabContainer/CHAT 2" unique_id=1776279037]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.462
+anchor_right = 0.53300005
+anchor_bottom = 0.535
 offset_left = 14.0
-offset_top = 285.0
-offset_right = 614.0
-offset_bottom = 330.0
+offset_top = -0.054016113
+offset_right = -0.016052246
+offset_bottom = -0.09500122
 text = "nsec1cg99f0q7ptvn6w0r2hfns848ses28jqnp40vs4v0s7e67fg88u0sdvqljj"
 placeholder_text = "mi nsec"
 
 [node name="npub" type="LineEdit" parent="TabContainer/CHAT 2" unique_id=1351505627]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.577
+anchor_right = 0.52900004
+anchor_bottom = 0.62700003
 offset_left = 9.0
-offset_top = 356.0
-offset_right = 609.0
-offset_bottom = 387.0
+offset_top = -0.009002686
+offset_right = -0.40808105
+offset_bottom = 0.14099121
 text = "npub1x20uef6xzepy5ygzp92trw27prdy7v3gqxqeed24tlmr5cht5gdsazrq2v"
 placeholder_text = "otro npub"
 
 [node name="chat_app" type="Button" parent="TabContainer/CHAT 2" unique_id=1531779227]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.656
+anchor_right = 0.11800001
+anchor_bottom = 0.73600006
 offset_left = 11.0
-offset_top = 405.0
-offset_right = 136.0
-offset_bottom = 454.0
+offset_top = 0.24798584
+offset_right = 0.06399536
+offset_bottom = -0.11203003
 text = "run chat"
 
 [node name="relayedit" type="Control" parent="TabContainer" unique_id=505942342]
@@ -159,11 +201,17 @@ script = ExtResource("3_km8v1")
 metadata/_tab_index = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/relayedit" unique_id=1964053203]
-layout_mode = 0
-offset_left = 510.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.42200002
+anchor_right = 1.0
+anchor_bottom = 0.87700003
+offset_left = 23.855988
 offset_top = 12.0
-offset_right = 1064.0
-offset_bottom = 541.0
+offset_right = -88.0
+offset_bottom = -0.10900879
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="relays" type="Label" parent="TabContainer/relayedit/ScrollContainer" unique_id=347124819]
 layout_mode = 2
@@ -173,47 +221,71 @@ text = "RELAYS:
 
 [node name="editerelay" type="LineEdit" parent="TabContainer/relayedit" unique_id=72884150]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 0.44300002
+anchor_bottom = 0.596
 offset_left = 10.0
-offset_top = 316.0
-offset_right = -668.0
-offset_bottom = -249.0
+offset_top = 7.5
+offset_right = -26.33603
+offset_bottom = 0.26800537
 grow_horizontal = 2
 grow_vertical = 2
 text = "wss://relay.mostro.network"
 placeholder_text = "relay"
 
 [node name="indexrelay" type="LineEdit" parent="TabContainer/relayedit/editerelay" unique_id=78423308]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 2.538
 offset_left = 2.0
-offset_top = 101.0
-offset_right = 191.0
-offset_bottom = 132.0
+offset_top = 49.0
+offset_right = -46.0
+offset_bottom = 0.023986816
 placeholder_text = "select relay number"
+metadata/_edit_use_anchors_ = true
 
 [node name="addrelay" type="Button" parent="TabContainer/relayedit/editerelay" unique_id=917080278]
-layout_mode = 0
-offset_left = -2.0
-offset_top = 54.0
-offset_right = 177.0
-offset_bottom = 94.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.004
+anchor_top = 0.5
+anchor_right = 0.44500002
+anchor_bottom = 2.5740001
+offset_left = -0.10399985
+offset_top = 28.0
+offset_right = -33.930008
+offset_bottom = -39.848007
 text = "add relay"
 
 [node name="quitrelay" type="Button" parent="TabContainer/relayedit/editerelay" unique_id=869594473]
-layout_mode = 0
-offset_top = 139.0
-offset_right = 128.0
-offset_bottom = 179.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.060000002
+anchor_top = 2.094
+anchor_right = 0.39800003
+anchor_bottom = 3.9810002
+offset_left = 28.44
+offset_top = 30.111992
+offset_right = -60.652008
+offset_bottom = -28.012009
 text = "quit relay"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/relayedit" unique_id=1912805192]
-layout_mode = 0
-offset_left = 197.0
-offset_top = 369.0
-offset_right = 431.0
-offset_bottom = 410.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.171
+anchor_top = 0.59800005
+anchor_right = 0.374
+anchor_bottom = 0.70600003
+offset_left = 0.0079956055
+offset_top = 0.033966064
+offset_right = 0.15197754
+offset_bottom = -25.60202
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="load" type="Button" parent="TabContainer/relayedit/HBoxContainer" unique_id=1033378206]
 layout_mode = 2
@@ -224,10 +296,14 @@ layout_mode = 2
 text = "save"
 
 [node name="Button" type="Button" parent="." unique_id=8242349]
-offset_left = 1035.0
+anchors_preset = -1
+anchor_left = 0.89800006
+anchor_right = 0.99300003
+anchor_bottom = 0.101
+offset_left = 0.50390625
 offset_top = 3.0
-offset_right = 1144.0
-offset_bottom = 35.0
+offset_right = 0.063964844
+offset_bottom = -30.448006
 text = "Quit (X) "
 
 [connection signal="pressed" from="TabContainer/CHAT 1/send" to="." method="_on_send_pressed"]
