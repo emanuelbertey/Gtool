@@ -42,7 +42,7 @@ crossterm = { version = "0.28.1", features = ["event-stream"] }
 ratatui = "0.29.0"
 tokio = { version = "1.44.1", features = ["full"] }
 #nostr-sdk = { version = "0.40.0", features = ["nip44", "nip59"] }
-clap = { version = "4.5.32", features = ["derive"] }
+clap = { version = "4.5.54", features = ["derive"] }
 
 rpassword = "7"
 
