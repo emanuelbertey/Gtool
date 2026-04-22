@@ -25,7 +25,7 @@ use tokenizers::models::TrainerWrapper;
 
 use xlstm::blocks::xlstm_large::{XLSTMLarge, XLSTMLargeConfig};
 
-// We use Autodiff for training support, NdArray for CPU
+// We use Autodiff for training support, NdArray for CPU 8
 type MyBackend = Autodiff<NdArray<f32>>;
 
 /// Professional Tokenizer using Hugging Face 'tokenizers'
