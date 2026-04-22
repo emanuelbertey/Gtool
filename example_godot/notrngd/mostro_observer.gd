@@ -29,7 +29,7 @@ func _conect():
 	
 	# cambiemos el timepo esta limitado a 10 mensajes 
 	nostr_peer.n_seconds = 2345566
-	nostr_peer.n_limit =  10
+	nostr_peer.n_limit =  3
 	
 	# 2. Inicializar como observer (solo lectura)
 	print("Inicializando Observer...")
@@ -66,6 +66,16 @@ func _on_poll_messages():
 			$ScrollContainer/mensaje.text += str("\n  Mensaje: " + str(msg["content"]))
 			$ScrollContainer/mensaje.text += str("\n  Timestamp: " +  str(msg["created_at"]))
 			$ScrollContainer/mensaje.text += str("\n  ----------------------------------------")
+			var dict = Time.get_datetime_dict_from_unix_time(int(str(msg["created_at"])))
+			var fecha_formateada = "%02d/%02d/%d %02d:%02d:%02d" % [
+		dict.day, 
+		dict.month, 
+		dict.year, 
+		dict.hour, 
+		dict.minute,
+		dict.second
+	]
+			print("Resultado Fechas: ", fecha_formateada)
 		await get_tree().process_frame
 		scroll.scroll_vertical = scroll.get_v_scroll_bar().max_value
 

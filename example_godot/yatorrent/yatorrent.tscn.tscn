@@ -24,6 +24,34 @@ offset_right = 543.0
 offset_bottom = 242.0
 text = "torrent"
 
+[node name="piece" type="Button" parent="." unique_id=1847879810]
+offset_left = 14.0
+offset_top = 289.0
+offset_right = 247.0
+offset_bottom = 386.0
+text = "piece"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=535131596]
+offset_left = 254.0
+offset_top = 291.0
+offset_right = 521.0
+offset_bottom = 389.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ip" type="LineEdit" parent="VBoxContainer" unique_id=299697398]
+layout_mode = 2
+size_flags_vertical = 3
+text = "119.180.33.82"
+placeholder_text = "ip"
+
+[node name="port" type="LineEdit" parent="VBoxContainer" unique_id=309246054]
+layout_mode = 2
+size_flags_vertical = 3
+text = "44493"
+placeholder_text = "port"
+
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="uri" to="." method="_on_uri_pressed"]
 [connection signal="pressed" from="torrent" to="." method="_on_torrent_pressed"]
+[connection signal="pressed" from="piece" to="." method="_on_piece_pressed"]

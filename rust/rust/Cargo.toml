@@ -55,6 +55,21 @@ nostr-sdk = { version = "=0.43.0", features = ["nip44", "nip59"] }
 nostr = "=0.43.1"
 nostringer = "0.1.8"
 
+
+# model xlstm large
+burn = { version = "0.20.1", default-features = false, features = ["ndarray", "autodiff", "train"] }
+burn-autodiff = { version = "0.20.1", default-features = false }
+burn-ndarray = { version = "0.20.1", default-features = false }
+tokenizers = "0.20"
+
+num-traits = "0.2"
+
+
+[target.'cfg(any(windows, target_os = "linux", target_os = "macos"))'.dependencies]
+burn-cuda = "0.20.1"
+burn-wgpu = "0.20.1"
+
+
 [profile.release]
 opt-level = 3
 lto = true

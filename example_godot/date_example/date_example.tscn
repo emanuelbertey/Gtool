@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://df7s8hah1j2k3"]
+
+[ext_resource type="Script" uid="uid://xkqyvwsr80di" path="res://example_godot/date_example/date_converter.gd" id="1_x1y2z"]
+
+[node name="DateExample" type="Node" unique_id=1760835677]
+script = ExtResource("1_x1y2z")

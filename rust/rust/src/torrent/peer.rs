@@ -242,33 +242,57 @@ pub fn request_piece(
     let mut handshake_res = [0u8; 68];
     stream.read_exact(&mut handshake_res).map_err(|e| format!("Failed to read handshake response: {}", e))?;
 
-    // 2. Wait for Bitfield
+    // 2. Leer mensajes hasta recibir unchoke (ID=1)
+    // Los peers reales pueden mandar bitfield, have, unchoke en cualquier orden
     let mut len_buf = [0u8; 4];
-    stream.read_exact(&mut len_buf).map_err(|e| format!("Failed to read message length: {}", e))?;
-    let msg_len = u32::from_be_bytes(len_buf);
+    let mut unchoked = false;
     
-    if msg_len == 0 {
-         return Err("Received keep-alive, expecting bitfield".to_string());
+    for _ in 0..20 { // máximo 20 mensajes antes de rendirse
+        stream.read_exact(&mut len_buf).map_err(|e| format!("Failed to read message length: {}", e))?;
+        let msg_len = u32::from_be_bytes(len_buf);
+        
+        // Keep-alive (len=0), ignorar y continuar
+        if msg_len == 0 {
+            continue;
+        }
+        
+        let mut msg_id = [0u8; 1];
+        stream.read_exact(&mut msg_id).map_err(|e| format!("Failed to read message ID: {}", e))?;
+        
+        let payload_len = (msg_len - 1) as usize;
+        
+        match msg_id[0] {
+            1 => {
+                // Unchoke — lo que esperamos
+                unchoked = true;
+                break;
+            }
+            5 => {
+                // Bitfield — leer y descartar
+                let mut bitfield = vec![0u8; payload_len];
+                stream.read_exact(&mut bitfield).map_err(|e| format!("Failed to read bitfield: {}", e))?;
+                // Ahora que tenemos el bitfield, enviamos Interested
+                stream.write_all(&[0, 0, 0, 1, 2]).map_err(|e| format!("Failed to send interested: {}", e))?;
+            }
+            4 => {
+                // Have — leer y descartar
+                let mut payload = vec![0u8; payload_len];
+                stream.read_exact(&mut payload).map_err(|e| format!("Failed to read have: {}", e))?;
+            }
+            0 => {
+                // Choke — el peer nos está chokando, error
+                return Err("Peer sent choke, cannot download".to_string());
+            }
+            _ => {
+                // Otro mensaje desconocido — leer y descartar
+                let mut payload = vec![0u8; payload_len];
+                stream.read_exact(&mut payload).map_err(|e| format!("Failed to read unknown msg {}: {}", msg_id[0], e))?;
+            }
+        }
     }
-
-    let mut msg_id = [0u8; 1];
-    stream.read_exact(&mut msg_id).map_err(|e| format!("Failed to read message ID: {}", e))?;
     
-    if msg_id[0] != 5 {
-        return Err(format!("Expected bitfield (5), got {}", msg_id[0]));
-    }
-    
-    let mut bitfield = vec![0u8; (msg_len - 1) as usize];
-    stream.read_exact(&mut bitfield).map_err(|e| format!("Failed to read bitfield content: {}", e))?;
-    
-    // 3. Send Interested
-    stream.write_all(&[0, 0, 0, 1, 2]).map_err(|e| format!("Failed to send interested: {}", e))?;
-
-    // 4. Wait for Unchoke
-    stream.read_exact(&mut len_buf).map_err(|e| format!("Failed to read length for unchoke: {}", e))?;
-    stream.read_exact(&mut msg_id).map_err(|e| format!("Failed to read ID for unchoke: {}", e))?;
-    if msg_id[0] != 1 {
-        return Err(format!("Expected unchoke (1), got {}", msg_id[0]));
+    if !unchoked {
+        return Err("Never received unchoke from peer".to_string());
     }
 
     // 5. Download blocks
@@ -276,6 +300,7 @@ pub fn request_piece(
     let piece_data_len = piece_length.min(total_length - (piece_index as usize * piece_length));
     let mut piece_data = vec![0u8; piece_data_len];
     let mut offset = 0;
+    let mut msg_id = [0u8; 1]; // reutilizado para leer IDs de mensajes de bloque
 
     while offset < piece_data.len() {
         let len = block_size.min(piece_data.len() - offset);

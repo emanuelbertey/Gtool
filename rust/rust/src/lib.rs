@@ -56,3 +56,4 @@ mod pkarrgodot;
 mod shamir_godot;
 mod cuckoo_godot;
 mod infotorrent_godot;
+mod xlstm_large_node;

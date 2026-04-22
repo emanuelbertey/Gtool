@@ -1,7 +1,11 @@
 extends Node
 
 var info_torrent = InfoTorrent.new()
-
+var peer = TPeer.new()
+var peerip
+var peerport
+var inx = 1
+var data
 func _ready() -> void:
 	# 1. Ejemplo desde un Magnet/InfoHash (Asíncrono con Red)
 	#test_magnet("magnet:?xt=urn:btih:01c137287d6f0ed05a56742dae794f632c79ff3d")
@@ -25,7 +29,7 @@ func test_magnet(uri: String):
 		print("--- Magnet Cargado ---")
 		
 		# OPCIONAL: Puedes añadir trackers personalizados desde GDScript (HTTPS soportado)
-		info_torrent.add_tracker("https://tracker.nanoset.net:443/announce")
+		#info_torrent.add_tracker("https://tracker.nanoset.net:443/announce")
 		# info_torrent.set_trackers(["udp://...", "https://..."])
 		
 		print("Hash: ", info_torrent.get_info_hash())
@@ -73,11 +77,13 @@ func _on_button_pressed() -> void:
 	var indice_a_pedir = 0 
 	var hash_bruto = get_hash_de_pieza(indice_a_pedir)
 	var hash_hex = bytes_a_hex(hash_bruto)
-	
+	var ha =  info_torrent.get_piece_hashes()
 	print("Hash Piece ", indice_a_pedir, " (Hex): ", hash_hex)
 	print("Hash Piece ", indice_a_pedir, " (Raw): ", hash_bruto)
+	print("Hash All : ", ha.size() / 20, " (Raw Size): ", hash_bruto.size())
 	print("Tamaño total: ", info_torrent.get_total_size())
-	
+	prints("tamaño del piece " , info_torrent.get_piece_length())
+	prints("piece custom ",get_piece_size(0))
 	var files = info_torrent.get_files()
 	for f in files:
 		print("- ", f.path, " (", String.humanize_size(f.size), ")")
@@ -96,6 +102,28 @@ func bytes_a_hex(bytes: PackedByteArray) -> String:
 	return hex
 
 
+func get_piece_size(idx) -> int:
+	if idx == null:
+		push_warning("get_piece_size: El índice es Nil, se usará 0 por defecto.")
+		idx = 0
+		
+	if not info_torrent:
+		return 0
+		
+	var total_size = info_torrent.get_total_size()
+	var piece_length = info_torrent.get_piece_length()
+	var piece_count = info_torrent.get_piece_count()
+	
+	if idx < 0 or idx >= piece_count:
+		return 0
+	
+	if idx == piece_count - 1:
+		var remainder = total_size % piece_length
+		return remainder if remainder > 0 else piece_length
+		
+	return piece_length
+
+
 func _on_uri_pressed() -> void:
 	test_magnet("magnet:?xt=urn:btih:01c137287d6f0ed05a56742dae794f632c79ff3d")
 	pass # Replace with function body.
@@ -104,3 +132,16 @@ func _on_uri_pressed() -> void:
 func _on_torrent_pressed() -> void:
 	test_file("C:/Users/Emabe/Downloads/ubuntu-25.10-desktop-amd64.iso.torrent")
 	pass # Replace with function body.
+
+
+func _on_piece_pressed() -> void:
+	var piece_idx = int(inx)
+	data = peer.request_piece_raw(
+		info_torrent.get_info_hash(),
+		str($VBoxContainer/ip.text),
+		int($VBoxContainer/port.text),
+		piece_idx,
+		get_piece_size(piece_idx),  # tamaño REAL de esta pieza (última puede ser más chica)
+		int(info_torrent.get_total_size()),    # tamaño TOTAL del torrent
+		info_torrent.get_piece_hash(piece_idx)
+	)
