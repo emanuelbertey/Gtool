@@ -6,7 +6,7 @@ use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::Duration;
 use std::fs;
-use crate::torrent::peer::{self, url_encode_bytes, extract_peers_bytes, request_piece, generate_peer_id};
+use crate::torrent::peer::{url_encode_bytes, extract_peers_bytes, request_piece, generate_peer_id};
 use crate::torrent::utils::{decode_bencoded_value, get_i64, extract_info_hash, extract_pieces_bytes};
 use reqwest;
 

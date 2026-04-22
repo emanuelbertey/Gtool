@@ -353,7 +353,7 @@ impl XLSTMLargeChat {
         current_state = next_state.expect("State error");
 
         let [_, s_len, v_dim] = logits.dims();
-        let mut last_logits = logits.slice([0..1, (s_len - 1)..s_len]).reshape([1, v_dim]);
+        let last_logits = logits.slice([0..1, (s_len - 1)..s_len]).reshape([1, v_dim]);
 
         let mut result_ids = Vec::new();
         let mut history = seed_ids.clone();
@@ -457,8 +457,8 @@ fn sample_from_logits<B: Backend>(
 
     let sum: f32 = weights.iter().sum();
     use rand::Rng;
-    let mut rng = rand::rng(); 
-    let sample: f32 = rng.random::<f32>() * sum; 
+    let mut rng = rand::thread_rng(); 
+    let sample: f32 = rng.r#gen::<f32>() * sum; 
     let mut cumulative = 0.0;
     for (i, &p) in weights.iter().enumerate() {
         cumulative += p;

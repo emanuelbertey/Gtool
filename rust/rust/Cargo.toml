@@ -22,6 +22,7 @@ futures = "0.3"
 
 #anyhow = "1"
 thiserror = "1"
+xlstm = { path = "src/model" }
 
 
 anyhow = "1.0.68"                                                  # ergonomic error handling with context support (e.g., `anyhow::Result`)

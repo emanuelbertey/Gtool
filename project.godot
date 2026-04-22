@@ -13,7 +13,7 @@ config_version=5
 config/name="Gtool"
 run/main_scene="uid://v0sked7wrod7"
 config/auto_accept_quit=false
-config/features=PackedStringArray("4.6", "GL Compatibility")
+config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="uid://dcvpakna8i04d"
 
 [display]

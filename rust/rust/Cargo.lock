@@ -44,6 +44,7 @@ dependencies = [
  "thiserror 1.0.69",
  "tokenizers",
  "tokio",
+ "xlstm",
  "yatorrent",
 ]
 
@@ -8021,6 +8022,22 @@ checksum = "32e45ad4206f6d2479085147f02bc2ef834ac85886624a23575ae137c8aa8156"
 dependencies = [
  "libc",
  "rustix 1.1.4",
+]
+
+[[package]]
+name = "xlstm"
+version = "0.1.0"
+dependencies = [
+ "burn",
+ "burn-autodiff",
+ "burn-cuda",
+ "burn-ndarray",
+ "burn-wgpu",
+ "num-traits",
+ "rand 0.9.3",
+ "serde",
+ "serde_json",
+ "tokenizers",
 ]
 
 [[package]]

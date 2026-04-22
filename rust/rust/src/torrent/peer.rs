@@ -3,11 +3,10 @@ use super::utils::{decode_bencoded_value_with_index};
 use super::utils::{decode_bencoded_value, extract_info_hash, extract_pieces_bytes, get_str, get_i64};
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use std::fs;
-use std::fs::OpenOptions;
 use std::io::{Read, Write};
 use std::net::TcpStream;
 use sha1::{Sha1, Digest};
-use crate::state::{VEC_DATA, DOWNLOADED_DATA, GLOBAL_ARRAY, GLOBAL_IPS, GLOBAL_HTTP};
+use crate::state::{GLOBAL_IPS, GLOBAL_HTTP};
 
 
 
@@ -200,7 +199,7 @@ pub fn get_first_peer(
 /// Generates a peer_id and its encoded form.
 pub fn generate_peer_id() -> Vec<u8> {
     thread_rng()
-        .sample_iter(rand::distributions::Standard)
+        .sample_iter::<u8, _>(rand::distributions::Standard)
         .take(20)
         .collect()
 }
