@@ -15,6 +15,10 @@ pub struct NostrPeer {
     n_seconds: i64,
     #[export]
     n_limit: i64,
+    #[export]
+    timestamp_inicio: i64,
+    #[export]
+    timestamp_fin: i64,
     runtime: Arc<Runtime>,
     client: Arc<Mutex<Option<Client>>>,
     shared_keys: Arc<Mutex<Option<Keys>>>,
@@ -30,6 +34,8 @@ impl INode for NostrPeer {
             base,
             n_seconds: 600,
             n_limit: 10,
+            timestamp_inicio: 0,
+            timestamp_fin: 0,
             runtime: Arc::new(runtime),
             client: Arc::new(Mutex::new(None)),
             shared_keys: Arc::new(Mutex::new(None)),
@@ -73,10 +79,17 @@ impl NostrPeer {
             
             client.connect().await;
 
-            let filter = Filter::new()
+            let mut filter = Filter::new()
                 .kind(Kind::GiftWrap)
                 .limit(limit)
                 .pubkey(shared_keys.public_key());
+            
+            if self.timestamp_inicio > 0 {
+                filter = filter.since(Timestamp::from(self.timestamp_inicio as u64));
+            }
+            if self.timestamp_fin > 0 {
+                filter = filter.until(Timestamp::from(self.timestamp_fin as u64));
+            }
             
             client.subscribe(filter, None).await.map_err(|e| format!("Failed to subscribe: {}", e))?;
 
@@ -124,10 +137,17 @@ impl NostrPeer {
             
             client.connect().await;
 
-            let filter = Filter::new()
+            let mut filter = Filter::new()
                 .kind(Kind::GiftWrap)
                 .limit(limit)
                 .pubkey(shared_keys.public_key());
+            
+            if self.timestamp_inicio > 0 {
+                filter = filter.since(Timestamp::from(self.timestamp_inicio as u64));
+            }
+            if self.timestamp_fin > 0 {
+                filter = filter.until(Timestamp::from(self.timestamp_fin as u64));
+            }
             
             client.subscribe(filter, None).await.map_err(|e| format!("Failed to subscribe: {}", e))?;
 

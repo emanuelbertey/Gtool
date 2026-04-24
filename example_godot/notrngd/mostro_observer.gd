@@ -11,6 +11,9 @@ var shared_key = ""
 #var relay = ""
 var relay_url: Array[String] = ["wss://relay.mostro.network", "wss://nos.lol", "wss://relay.damus.io"]
 
+#func _ready() -> void:
+	#nostr_peer.timestamp_inicio = 1713890000
+
 func _conect():
 	print("\n=== Observer - Mostro Chat Demo ===\n")
 	var aux = $"../relayedit".relay_url
@@ -26,10 +29,16 @@ func _conect():
 	# 1. Crear el nodo NostrPeer
 	nostr_peer = NostrPeer.new()
 	add_child(nostr_peer)
+	var ahora = Time.get_unix_time_from_system()
+	var un_anio = 365 * 24 * 60 * 60
+	var un_mes = 30 * 24 * 60 * 60
+
+	nostr_peer.timestamp_inicio = ahora - un_anio
+	nostr_peer.timestamp_fin = ahora - un_mes
 	
-	# cambiemos el timepo esta limitado a 10 mensajes 
-	nostr_peer.n_seconds = 2345566
-	nostr_peer.n_limit =  3
+	# n_seconds debe ser mayor al tiempo total que queremos ver hacia atrás
+	nostr_peer.n_seconds = un_anio + 86400 
+	nostr_peer.n_limit = 100
 	
 	# 2. Inicializar como observer (solo lectura)
 	print("Inicializando Observer...")

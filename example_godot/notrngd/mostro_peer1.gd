@@ -8,7 +8,8 @@ var peer2_pubkey = ""
 var relay_url: Array[String] = ["wss://relay.mostro.network", "wss://nos.lol", "wss://relay.damus.io"]
 var instancia = 5
 
-
+#func _ready() -> void:
+	#nostr_peer.timestamp_inicio = 1713890000
 func _conect():
 	print("\n=== Peer 1 - Mostro Chat Demo ===\n")
 	var aux = $"../relayedit".relay_url
@@ -28,7 +29,7 @@ func _conect():
 	# 1. Crear el nodo NostrPeer
 	nostr_peer = NostrPeer.new()
 	add_child(nostr_peer)
-	
+	nostr_peer.timestamp_inicio = 1713890000
 	# 2. Inicializar como participante
 	print("Inicializando Peer 1...")
 	var success = nostr_peer.init_participant(peer1_secret, peer2_pubkey, relay_url)

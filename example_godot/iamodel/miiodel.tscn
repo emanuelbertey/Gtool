@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://rqq3oovj8hcl"]
 
-[ext_resource type="Script" uid="uid://chg15gxp8vxuy" path="res://xlstm_large_chat.gd" id="1_2pabi"]
+[ext_resource type="Script" uid="uid://c4r8w2wlxmkyd" path="res://example_godot/iamodel/xlstm_large_chat.gd" id="1_2pabi"]
 
 [node name="miiodel" type="Control" unique_id=1461080153]
 layout_mode = 3
