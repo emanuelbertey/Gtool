@@ -86,6 +86,7 @@ func _detect_multi_volumes(first_part_path: String) -> Array[String]:
 	
 	# Ordenar los volúmenes de manera ascendente (.001, .002, etc.)
 	volumes.sort()
+	prints(volumes)
 	return volumes
 
 # MODO 1: CARGAR TODO EN RAM (Para archivos únicos pequeños)
@@ -194,19 +195,28 @@ func _on_load_from_disk_pressed() -> void:
 		progress_bar.value = 0
 		return
 
+	var detected_format = ""
+	if unarc.is_supported_archive(current_archive_path):
+		detected_format = unarc.get_archive_format_name(current_archive_path).to_lower()
+		
+	if detected_format != "" and detected_format != current_format:
+		status_label.text = "¡Formato genérico detectado! Abriendo como: %s" % detected_format.to_upper()
+		current_format = detected_format
+	prints(detected_format , "formato automatico")
+	prints(obtener_formato(detected_volumes) , "formato gdscript")
 	# Listar entradas
 	if detected_volumes.size() > 1:
 		status_label.text = "Detectados %d volúmenes divididos en disco. Mapeando cabecera..." % detected_volumes.size()
-		current_file_entries = unarc.get_entries_multi_volume(detected_volumes, current_format, password)
+		current_file_entries = unarc.get_entries_multi_volume_with_password(detected_volumes,obtener_formato(detected_volumes), password)
 	else:
 		# Archivo de volumen único convencional o genérico
-		var detected_format = ""
-		if unarc.is_supported_archive(current_archive_path):
-			detected_format = unarc.get_archive_format_name(current_archive_path).to_lower()
-			
-		if detected_format != "" and detected_format != current_format:
-			status_label.text = "¡Formato genérico detectado! Abriendo como: %s" % detected_format.to_upper()
-			current_format = detected_format
+		#var detected_format = ""
+		#if unarc.is_supported_archive(current_archive_path):
+			#detected_format = unarc.get_archive_format_name(current_archive_path).to_lower()
+			#
+		#if detected_format != "" and detected_format != current_format:
+			#status_label.text = "¡Formato genérico detectado! Abriendo como: %s" % detected_format.to_upper()
+			#current_format = detected_format
 			
 		if password != "":
 			current_file_entries = unarc.get_entries_with_password(current_archive_path, password)
@@ -253,9 +263,9 @@ func _on_file_item_selected(index: int) -> void:
 	if active_mode == "ram" or active_mode == "progressive":
 		status_label.text = "Descomprimiendo en RAM: " + entry_name.get_file()
 		uncompressed_bytes = unarc.read_entry_bytes_from_bytes(
-			current_archive_bytes, 
-			entry_name, 
-			current_format, 
+			current_archive_bytes,
+			entry_name,
+			current_format,
 			password
 		)
 	else:
@@ -375,10 +385,10 @@ func _on_extract_to_disk_pressed() -> void:
 			success = true
 	else:
 		# Modo Disco / Multi-volumen
-		if detected_volumes.size() > 1:
+		if detected_volumes.size() > 1 and password == "":
 			status_label.text = "Extrayendo desde Multi-Volumen divididos directamente a disco..."
 			# Usamos la nueva API Genérica Multi-Volumen de Rust
-			success = unarc.extract_all_multi_volume(detected_volumes, current_format, global_output_path.get_base_dir(), password)
+			success = unarc.extract_all_multi_volume(detected_volumes, current_format, global_output_path.get_base_dir())
 		else:
 			if password != "":
 				status_label.text = "Extrayendo archivo protegido con contraseña..."
@@ -484,3 +494,21 @@ func _format_size(bytes: int) -> String:
 
 func _on_back_pressed() -> void:
 	get_tree().change_scene_to_file("res://example_godot/unarc_test/example_unarc.tscn")
+
+
+func obtener_formato(archivos: Array[String]) -> String:
+	var permitidos = ["7z", "rar", "zip"]
+	
+	for ruta in archivos:
+		var nombre = ruta.get_file()
+		var ext = nombre.get_extension().to_lower()
+		
+		# Limpieza: Si es un número (001) o empieza con "part" (part1, part02)
+		if ext.is_valid_int() or ext.begins_with("part"):
+			nombre = nombre.get_basename()
+			ext = nombre.get_extension().to_lower()
+		
+		if ext in permitidos:
+			return ext
+			
+	return ""
