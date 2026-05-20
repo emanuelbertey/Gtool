@@ -207,24 +207,25 @@ func _on_load_from_disk_pressed() -> void:
 	# Listar entradas
 	if detected_volumes.size() > 1:
 		status_label.text = "Detectados %d volúmenes divididos en disco. Mapeando cabecera..." % detected_volumes.size()
-		current_file_entries = unarc.get_entries_multi_volume_with_password(detected_volumes,obtener_formato(detected_volumes), password)
+		current_file_entries = unarc.get_entries_multi_volume_with_password(detected_volumes, obtener_formato(detected_volumes), password)
 	else:
 		# Archivo de volumen único convencional o genérico
-		#var detected_format = ""
-		#if unarc.is_supported_archive(current_archive_path):
-			#detected_format = unarc.get_archive_format_name(current_archive_path).to_lower()
-			#
-		#if detected_format != "" and detected_format != current_format:
-			#status_label.text = "¡Formato genérico detectado! Abriendo como: %s" % detected_format.to_upper()
-			#current_format = detected_format
-			
-		if password != "":
+		if password != "" and detected_format != "" and unarc.has_method("get_entries_with_format_and_password"):
+			current_file_entries = unarc.get_entries_with_format_and_password(current_archive_path, detected_format, password)
+		elif password != "":
 			current_file_entries = unarc.get_entries_with_password(current_archive_path, password)
-		elif detected_format != "":
-			current_file_entries = unarc.get_entries_with_format(current_archive_path, current_format)
+			if current_file_entries.size() == 0 and detected_format == "" and unarc.has_method("get_entries_with_format_and_password"):
+				current_file_entries = unarc.get_entries_with_format_and_password(current_archive_path, "7z", password)
+				if current_file_entries.size() > 0:
+					current_format = "7z"
+		elif detected_format != "" and unarc.has_method("get_entries_with_format"):
+			current_file_entries = unarc.get_entries_with_format(current_archive_path, detected_format)
 		else:
 			current_file_entries = unarc.get_entries(current_archive_path)
-	
+			if current_file_entries.size() == 0 and unarc.has_method("get_entries_with_format"):
+				current_file_entries = unarc.get_entries_with_format(current_archive_path, "7z")
+				if current_file_entries.size() > 0:
+					current_format = "7z"
 	if current_file_entries.size() == 0:
 		status_label.text = "[Error] No se pudieron leer cabeceras. ¿Contraseña incorrecta o faltan partes?"
 		progress_bar.value = 0
@@ -282,11 +283,16 @@ func _on_file_item_selected(index: int) -> void:
 			)
 		else:
 			status_label.text = "Descomprimiendo en RAM desde Disco: " + entry_name.get_file()
-			uncompressed_bytes = unarc.read_entry_bytes_with_password(
-				current_archive_path,
-				entry_name,
-				password
-			)
+			if password != "" and current_format in ["7z", "zip", "rar"] and unarc.has_method("read_entry_bytes_with_format_and_password"):
+				uncompressed_bytes = unarc.read_entry_bytes_with_format_and_password(current_archive_path, entry_name, current_format, password)
+			elif current_format in ["7z", "zip", "rar"] and unarc.has_method("read_entry_bytes_with_format"):
+				uncompressed_bytes = unarc.read_entry_bytes_with_format(current_archive_path, entry_name, current_format)
+			else:
+				uncompressed_bytes = unarc.read_entry_bytes_with_password(
+					current_archive_path,
+					entry_name,
+					password
+				)
 		
 	if uncompressed_bytes.size() == 0:
 		status_label.text = "[Error] No se pudo extraer la previsualización a RAM. ¿Contraseña incorrecta?"
@@ -392,18 +398,26 @@ func _on_extract_to_disk_pressed() -> void:
 		else:
 			if password != "":
 				status_label.text = "Extrayendo archivo protegido con contraseña..."
-				var bytes = unarc.read_entry_bytes_with_password(current_archive_path, entry_name, password)
-				if bytes.size() > 0:
-					var dir = output_file_path.get_base_dir()
-					DirAccess.make_dir_recursive_absolute(dir)
-					var file = FileAccess.open(output_file_path, FileAccess.WRITE)
-					file.store_buffer(bytes)
-					file.close()
-					success = true
+				if current_format in ["7z", "zip", "rar"] and unarc.has_method("extract_entry_with_format_and_password"):
+					success = unarc.extract_entry_with_format_and_password(current_archive_path, entry_name, global_output_path, current_format, password)
+				else:
+					var bytes = unarc.read_entry_bytes_with_password(current_archive_path, entry_name, password)
+					if bytes.size() > 0:
+						var dir = output_file_path.get_base_dir()
+						DirAccess.make_dir_recursive_absolute(dir)
+						var file = FileAccess.open(output_file_path, FileAccess.WRITE)
+						file.store_buffer(bytes)
+						file.close()
+						success = true
 			else:
 				if unarc.is_supported_archive(current_archive_path):
 					var detected_format = unarc.get_archive_format_name(current_archive_path).to_lower()
-					success = unarc.extract_entry_with_format(current_archive_path, entry_name, global_output_path, detected_format)
+					if detected_format != "":
+						success = unarc.extract_entry_with_format(current_archive_path, entry_name, global_output_path, detected_format)
+					else:
+						success = unarc.extract_entry(current_archive_path, entry_name, global_output_path)
+				elif current_format in ["7z", "zip", "rar"]:
+					success = unarc.extract_entry_with_format(current_archive_path, entry_name, global_output_path, current_format)
 				else:
 					success = unarc.extract_entry(current_archive_path, entry_name, global_output_path)
 		

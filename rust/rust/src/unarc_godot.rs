@@ -491,6 +491,75 @@ impl Unarc {
     }
 
     #[func]
+    pub fn read_entry_bytes_with_format(&self, archive_path: String, entry_name: String, format_extension: String) -> PackedByteArray {
+        self.read_entry_bytes_with_format_and_password(archive_path, entry_name, format_extension, String::new())
+    }
+
+    #[func]
+    pub fn read_entry_bytes_with_format_and_password(&self, archive_path: String, entry_name: String, format_extension: String, password: String) -> PackedByteArray {
+        let path = Path::new(&archive_path);
+        if !path.exists() {
+            godot_warn!("El archivo no existe: {}", archive_path);
+            return PackedByteArray::new();
+        }
+
+        let dummy_path = format!("dummy.{}", format_extension);
+        let format = match ArchiveFormat::from_path(Path::new(&dummy_path)) {
+            Some(fmt) => fmt,
+            None => {
+                godot_error!("No se pudo determinar el formato forzado del archivo: {}", format_extension);
+                return PackedByteArray::new();
+            }
+        };
+
+        let options = if password.is_empty() {
+            unarc_rs::unified::ArchiveOptions::new()
+        } else {
+            unarc_rs::unified::ArchiveOptions::new().with_password(&password)
+        };
+
+        match std::fs::File::open(path) {
+            Ok(file) => {
+                match format.open_with_options(file, options) {
+                    Ok(mut archive) => {
+                        loop {
+                            match archive.next_entry() {
+                                Ok(Some(entry)) => {
+                                    if entry.name() == entry_name {
+                                        let options_for_read = unarc_rs::unified::ArchiveOptions::new().with_password(&password);
+                                        match archive.read_with_options(&entry, &options_for_read) {
+                                            Ok(data) => {
+                                                return PackedByteArray::from_iter(data);
+                                            }
+                                            Err(e) => {
+                                                godot_error!("Error leyendo la entrada {} con formato forzado y contraseña: {:?}", entry_name, e);
+                                                return PackedByteArray::new();
+                                            }
+                                        }
+                                    }
+                                }
+                                Ok(None) => break,
+                                Err(e) => {
+                                    godot_error!("Error iterando entradas: {:?}", e);
+                                    break;
+                                }
+                            }
+                        }
+                        godot_warn!("Entrada no encontrada en el archivo: {}", entry_name);
+                    }
+                    Err(e) => {
+                        godot_error!("No se pudo abrir el lector de formato forzado para {}: {:?}", archive_path, e);
+                    }
+                }
+            }
+            Err(e) => {
+                godot_error!("No se pudo abrir el archivo físico: {:?}", e);
+            }
+        }
+        PackedByteArray::new()
+    }
+
+    #[func]
     pub fn get_entries_from_bytes(&mut self, archive_bytes: PackedByteArray, format_extension: String) -> Array<VarDictionary> {
         self.get_entries_from_bytes_with_password(archive_bytes, format_extension, String::new())
     }
@@ -878,6 +947,72 @@ impl Unarc {
                                     let size = entry.original_size() as i64;
                                     let is_dir = name.ends_with('/') || name.ends_with('\\');
                                     
+                                    let _ = dict.insert("name", name);
+                                    let _ = dict.insert("size", size);
+                                    let _ = dict.insert("is_directory", is_dir);
+                                    entries_array.push(&dict);
+                                }
+                                Ok(None) => break,
+                                Err(e) => {
+                                    godot_error!("Error leyendo la entrada del archivo comprimido: {:?}", e);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    Err(e) => {
+                        godot_error!("No se pudo abrir el lector de formato para {}: {:?}", archive_path, e);
+                    }
+                }
+            }
+            Err(e) => {
+                godot_error!("No se pudo abrir el archivo físico {}: {:?}", archive_path, e);
+            }
+        }
+
+        self.entries_list = entries_array.clone();
+        entries_array
+    }
+
+    // Obtiene las entradas de un archivo comprimido especificando su formato manualmente con contraseña.
+    // (Útil para archivos genéricos como .dat, .bin, .miguel, o cuando el archivo está protegido)
+    #[func]
+    pub fn get_entries_with_format_and_password(&mut self, archive_path: String, format_extension: String, password: String) -> Array<VarDictionary> {
+        let mut entries_array = Array::new();
+        let path = Path::new(&archive_path);
+
+        if !path.exists() {
+            godot_warn!("El archivo no existe: {}", archive_path);
+            return entries_array;
+        }
+
+        let dummy_path = format!("dummy.{}", format_extension);
+        let format = match ArchiveFormat::from_path(Path::new(&dummy_path)) {
+            Some(fmt) => fmt,
+            None => {
+                godot_error!("Formato no soportado para la extensión: {}", format_extension);
+                return entries_array;
+            }
+        };
+
+        let options = if password.is_empty() {
+            unarc_rs::unified::ArchiveOptions::new()
+        } else {
+            unarc_rs::unified::ArchiveOptions::new().with_password(&password)
+        };
+
+        match std::fs::File::open(path) {
+            Ok(file) => {
+                match format.open_with_options(file, options) {
+                    Ok(mut archive) => {
+                        loop {
+                            match archive.next_entry() {
+                                Ok(Some(entry)) => {
+                                    let mut dict = VarDictionary::new();
+                                    let name = entry.name().to_string();
+                                    let size = entry.original_size() as i64;
+                                    let is_dir = name.ends_with('/') || name.ends_with('\\');
+
                                     let _ = dict.insert("name", name);
                                     let _ = dict.insert("size", size);
                                     let _ = dict.insert("is_directory", is_dir);
