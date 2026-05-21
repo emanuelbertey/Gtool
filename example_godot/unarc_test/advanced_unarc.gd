@@ -394,16 +394,21 @@ func _on_extract_to_disk_pressed() -> void:
 		# Modo Disco / Multi-volumen
 		prints("DEBUG volumes:", detected_volumes.size(), detected_volumes)
 		if detected_volumes.size() > 1:
-			_multi_volume_fallback_flag = true
-			status_label.text = "[Warn] Streaming multi-volumen no disponible. Usando RAM como fallback..."
-			var bytes = unarc.read_entry_bytes_with_password(current_archive_path, entry_name, password)
-			if bytes.size() > 0:
-				var dir = output_file_path.get_base_dir()
-				DirAccess.make_dir_recursive_absolute(dir)
-				var file = FileAccess.open(global_output_path, FileAccess.WRITE)
-				file.store_buffer(bytes)
-				file.close()
-				success = true
+			if unarc.has_method("extract_entry_multi_volume_with_password"):
+				status_label.text = "Extrayendo desde Multi-Volumen con streaming directo a disco..."
+				_multi_volume_fallback_flag = false
+				success = unarc.extract_entry_multi_volume_with_password(detected_volumes, current_format, entry_name, global_output_path, password)
+			else:
+				_multi_volume_fallback_flag = true
+				status_label.text = "[Warn] Streaming multi-volumen no disponible. Usando RAM como fallback..."
+				var bytes = unarc.read_entry_bytes_with_password(current_archive_path, entry_name, password)
+				if bytes.size() > 0:
+					var dir = output_file_path.get_base_dir()
+					DirAccess.make_dir_recursive_absolute(dir)
+					var file = FileAccess.open(global_output_path, FileAccess.WRITE)
+					file.store_buffer(bytes)
+					file.close()
+					success = true
 		else:
 			_multi_volume_fallback_flag = false
 			if password != "":
