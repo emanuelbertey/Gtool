@@ -24,6 +24,7 @@ var current_file_entries: Array = []
 var active_mode: String = "none" # "ram", "disk", "progressive"
 var selected_entry_metadata: Dictionary = {}
 var detected_volumes: Array[String] = [] # Almacena todas las partes si es multi-volumen
+var _multi_volume_fallback_flag: bool = false
 
 func _ready() -> void:
 	status_label.text = "Selecciona un archivo .7z, .rar o .zip. Carga desde Disco (Recomendado para archivos pesados >100MB) o desde RAM."
@@ -391,11 +392,20 @@ func _on_extract_to_disk_pressed() -> void:
 			success = true
 	else:
 		# Modo Disco / Multi-volumen
-		if detected_volumes.size() > 1 and password == "":
-			status_label.text = "Extrayendo desde Multi-Volumen divididos directamente a disco..."
-			# Usamos la nueva API Genérica Multi-Volumen de Rust
-			success = unarc.extract_all_multi_volume(detected_volumes, current_format, global_output_path.get_base_dir())
+		prints("DEBUG volumes:", detected_volumes.size(), detected_volumes)
+		if detected_volumes.size() > 1:
+			_multi_volume_fallback_flag = true
+			status_label.text = "[Warn] Streaming multi-volumen no disponible. Usando RAM como fallback..."
+			var bytes = unarc.read_entry_bytes_with_password(current_archive_path, entry_name, password)
+			if bytes.size() > 0:
+				var dir = output_file_path.get_base_dir()
+				DirAccess.make_dir_recursive_absolute(dir)
+				var file = FileAccess.open(global_output_path, FileAccess.WRITE)
+				file.store_buffer(bytes)
+				file.close()
+				success = true
 		else:
+			_multi_volume_fallback_flag = false
 			if password != "":
 				status_label.text = "Extrayendo archivo protegido con contraseña..."
 				if current_format in ["7z", "zip", "rar"] and unarc.has_method("extract_entry_with_format_and_password"):
@@ -427,11 +437,20 @@ func _on_extract_to_disk_pressed() -> void:
 		text_preview.show()
 		image_preview.hide()
 		hex_preview.hide()
-		text_preview.text = "¡ARCHIVO VOLCADO AL DISCO POR STREAMING CON ÉXITO!\n\n" + \
-			"Ruta local: " + output_file_path + "\n" + \
-			"Ruta global: " + global_output_path + "\n" + \
-			"Tamaño unificado: " + _format_size(selected_entry_metadata["size"]) + "\n\n" + \
-			"Este método realiza streaming nativo directo, por lo que el archivo nunca saturó tu memoria RAM. ¡Perfecto para archivos pesados!"
+		if _multi_volume_fallback_flag:
+			text_preview.text = "¡ARCHIVO VOLCADO AL DISCO CON ÉXITO! (vía RAM fallback)\n\n" + \
+				"Ruta local: " + output_file_path + "\n" + \
+				"Ruta global: " + global_output_path + "\n" + \
+				"Tamaño unificado: " + _format_size(selected_entry_metadata["size"]) + "\n\n" + \
+				"⚠️ AVISO: El streaming multi-volumen directo a disco aún no está implementado en la extensión Rust.\n" + \
+				"Se usó un fallback que carga los bytes en RAM antes de escribirlos a disco.\n" + \
+				"Para archivos muy grandes (>1GB) esto podría saturar la memoria."
+		else:
+			text_preview.text = "¡ARCHIVO VOLCADO AL DISCO POR STREAMING CON ÉXITO!\n\n" + \
+				"Ruta local: " + output_file_path + "\n" + \
+				"Ruta global: " + global_output_path + "\n" + \
+				"Tamaño unificado: " + _format_size(selected_entry_metadata["size"]) + "\n\n" + \
+				"Este método realiza streaming nativo directo, por lo que el archivo nunca saturó tu memoria RAM. ¡Perfecto para archivos pesados!"
 	else:
 		progress_bar.value = 0
 		status_label.text = "[Error] No se pudo volcar el archivo al disco."

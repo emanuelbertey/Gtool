@@ -8,6 +8,8 @@ pub struct Unarc {
     base: Base<RefCounted>,
     #[export]
     entries_list: Array<VarDictionary>,
+    #[export]
+    password: GString,
 }
 
 #[godot_api]
@@ -16,12 +18,122 @@ impl IRefCounted for Unarc {
         Self { 
             base,
             entries_list: Array::new(),
+            password: GString::from(""),
         }
     }
 }
-
 #[godot_api]
 impl Unarc {
+    // EXTRAER una sola entrada de un archivo de varios volúmenes con contraseña
+    #[func]
+    pub fn extract_entry_multi_volume_with_password(&self, paths: Array<GString>, format_extension: String, entry_name: String, dest_path: String, password: String) -> bool {
+        if paths.is_empty() {
+            return false;
+        }
+
+        let path_bufs: Vec<std::path::PathBuf> = paths.iter_shared().map(|p| std::path::PathBuf::from(p.to_string())).collect();
+        let options = if password.is_empty() {
+            unarc_rs::unified::ArchiveOptions::new()
+        } else {
+            unarc_rs::unified::ArchiveOptions::new().with_password(&password)
+        };
+        let ext = format_extension.to_lowercase();
+
+        if ext == "7z" {
+            match ArchiveFormat::open_multi_volume_7z(&path_bufs, options) {
+                Ok(mut archive) => {
+                    loop {
+                        match archive.next_entry() {
+                            Ok(Some(entry)) => {
+                                if entry.name() == entry_name {
+                                    if let Some(parent) = Path::new(&dest_path).parent() {
+                                        if let Err(e) = std::fs::create_dir_all(parent) {
+                                            godot_error!("No se pudo crear el directorio {:?}: {:?}", parent, e);
+                                            return false;
+                                        }
+                                    }
+                                    match std::fs::File::create(&dest_path) {
+                                        Ok(mut out_file) => {
+                                            let read_opts = unarc_rs::unified::ArchiveOptions::new().with_password(&password);
+                                            if let Err(e) = archive.read_to_with_options(&entry, &mut out_file, &read_opts) {
+                                                godot_error!("Error escribiendo flujo al archivo {}: {:?}", dest_path, e);
+                                                return false;
+                                            }
+                                            return true;
+                                        }
+                                        Err(e) => {
+                                            godot_error!("No se pudo crear el archivo {}: {:?}", dest_path, e);
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                            Ok(None) => break,
+                            Err(e) => {
+                                godot_error!("Error iterando entradas multi-volumen 7z: {:?}", e);
+                                return false;
+                            }
+                        }
+                    }
+                    godot_warn!("Entrada no encontrada en el archivo multi-volumen: {}", entry_name);
+                    return false;
+                }
+                Err(e) => {
+                    godot_error!("Error abriendo multi-volumen 7z: {:?}", e);
+                    return false;
+                }
+            }
+        } else if ext == "zip" {
+            match ArchiveFormat::open_multi_volume_zip(&path_bufs, options) {
+                Ok(mut archive) => {
+                    loop {
+                        match archive.next_entry() {
+                            Ok(Some(entry)) => {
+                                if entry.name() == entry_name {
+                                    if let Some(parent) = Path::new(&dest_path).parent() {
+                                        if let Err(e) = std::fs::create_dir_all(parent) {
+                                            godot_error!("No se pudo crear el directorio {:?}: {:?}", parent, e);
+                                            return false;
+                                        }
+                                    }
+                                    match std::fs::File::create(&dest_path) {
+                                        Ok(mut out_file) => {
+                                            let read_opts = unarc_rs::unified::ArchiveOptions::new().with_password(&password);
+                                            if let Err(e) = archive.read_to_with_options(&entry, &mut out_file, &read_opts) {
+                                                godot_error!("Error escribiendo flujo al archivo {}: {:?}", dest_path, e);
+                                                return false;
+                                            }
+                                            return true;
+                                        }
+                                        Err(e) => {
+                                            godot_error!("No se pudo crear el archivo {}: {:?}", dest_path, e);
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                            Ok(None) => break,
+                            Err(e) => {
+                                godot_error!("Error iterando entradas multi-volumen zip: {:?}", e);
+                                return false;
+                            }
+                        }
+                    }
+                    godot_warn!("Entrada no encontrada en el archivo multi-volumen: {}", entry_name);
+                    return false;
+                }
+                Err(e) => {
+                    godot_error!("Error abriendo multi-volumen zip: {:?}", e);
+                    return false;
+                }
+            }
+        } else {
+            // Fallback: reutilizar la función existente para archivos no split
+            let p0 = &path_bufs[0];
+            let p0_str = p0.to_string_lossy().to_string();
+            return self.extract_entry_with_password(p0_str, entry_name, dest_path, password);
+        }
+    }
     // Retorna una lista con la información (nombre, tamaño, si es directorio) de todas las entradas del archivo comprimido
     #[func]
     pub fn get_entries(&mut self, archive_path: String) -> Array<VarDictionary> {
