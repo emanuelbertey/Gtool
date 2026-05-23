@@ -173,6 +173,13 @@ func _on_load_from_disk_pressed() -> void:
 		current_format = "7z"
 	elif current_format.is_valid_int() and path.to_lower().contains(".zip."):
 		current_format = "zip"
+
+	# Si se detectó un multi-volumen, usar el formato real de las partes
+	if detected_volumes.size() > 1:
+		var volume_format = obtener_formato(detected_volumes)
+		if volume_format != "":
+			current_format = volume_format
+			print("Formato multi-volumen detectado: ", current_format)
 		
 	status_label.text = "Explorando directo desde el disco (Cero consumo de RAM)..."
 	progress_bar.value = 50
@@ -237,6 +244,7 @@ func _on_load_from_disk_pressed() -> void:
 		var icon_text = "📁 " if entry["is_directory"] else "📄 "
 		var size_text = "" if entry["is_directory"] else " (%s)" % _format_size(entry["size"])
 		var item_idx = file_list.add_item(prefix + icon_text + entry["name"] + size_text)
+		#prints(entry["size"])
 		file_list.set_item_metadata(item_idx, entry)
 		
 	progress_bar.value = 100
@@ -261,7 +269,9 @@ func _on_file_item_selected(index: int) -> void:
 	preview_panel.show()
 	
 	var uncompressed_bytes = PackedByteArray()
-	
+	if entry["size"] > 1:
+		prints("estato : "  , entry["size"])
+		return
 	if active_mode == "ram" or active_mode == "progressive":
 		status_label.text = "Descomprimiendo en RAM: " + entry_name.get_file()
 		uncompressed_bytes = unarc.read_entry_bytes_from_bytes(
@@ -389,16 +399,23 @@ func _on_extract_to_disk_pressed() -> void:
 			var file = FileAccess.open(output_file_path, FileAccess.WRITE)
 			file.store_buffer(bytes)
 			file.close()
+			prints("mal usa ram eso va abajo si no fuciona stream")
 			success = true
 	else:
 		# Modo Disco / Multi-volumen
 		prints("DEBUG volumes:", detected_volumes.size(), detected_volumes)
 		if detected_volumes.size() > 1:
+			prints("multivoluen detectado")
+			var multi_volume_format = obtener_formato(detected_volumes)
+			if multi_volume_format == "":
+				multi_volume_format = current_format
 			if unarc.has_method("extract_entry_multi_volume_with_password"):
+				prints("extract mlti volumen con pass")
 				status_label.text = "Extrayendo desde Multi-Volumen con streaming directo a disco..."
 				_multi_volume_fallback_flag = false
-				success = unarc.extract_entry_multi_volume_with_password(detected_volumes, current_format, entry_name, global_output_path, password)
+				success = unarc.extract_entry_multi_volume_with_password(detected_volumes, multi_volume_format, entry_name, global_output_path, password)
 			else:
+				prints("mal prsagio")
 				_multi_volume_fallback_flag = true
 				status_label.text = "[Warn] Streaming multi-volumen no disponible. Usando RAM como fallback..."
 				var bytes = unarc.read_entry_bytes_with_password(current_archive_path, entry_name, password)
@@ -415,7 +432,9 @@ func _on_extract_to_disk_pressed() -> void:
 				status_label.text = "Extrayendo archivo protegido con contraseña..."
 				if current_format in ["7z", "zip", "rar"] and unarc.has_method("extract_entry_with_format_and_password"):
 					success = unarc.extract_entry_with_format_and_password(current_archive_path, entry_name, global_output_path, current_format, password)
+					prints("extracion bien")
 				else:
+					prints("extracionmal")
 					var bytes = unarc.read_entry_bytes_with_password(current_archive_path, entry_name, password)
 					if bytes.size() > 0:
 						var dir = output_file_path.get_base_dir()

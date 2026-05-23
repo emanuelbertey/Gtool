@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://c5e3d7a8cac0d"]
 
-[ext_resource type="Script" path="res://example_godot/unarc_test/advanced_unarc.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://cwdwihyjtaevm" path="res://example_godot/unarc_test/advanced_unarc.gd" id="1_script"]
 
-[node name="AdvancedUnarc" type="Control"]
+[node name="AdvancedUnarc" type="Control" unique_id=572379652]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1304280363]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,7 +20,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.117647, 0.137255, 0.176471, 1)
 
-[node name="MainLayout" type="HSplitContainer" parent="."]
+[node name="MainLayout" type="HSplitContainer" parent="." unique_id=561883900]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,116 +31,117 @@ offset_right = -20.0
 offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
+split_offsets = PackedInt32Array(380)
 split_offset = 380
 
-[node name="Sidebar" type="VBoxContainer" parent="MainLayout"]
+[node name="Sidebar" type="VBoxContainer" parent="MainLayout" unique_id=112200445]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="TitleLabel" type="Label" parent="MainLayout/Sidebar"]
+[node name="TitleLabel" type="Label" parent="MainLayout/Sidebar" unique_id=2073482058]
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "Explorador de Archivos en RAM"
 horizontal_alignment = 1
 
-[node name="PathSection" type="VBoxContainer" parent="MainLayout/Sidebar"]
+[node name="PathSection" type="VBoxContainer" parent="MainLayout/Sidebar" unique_id=823637875]
 layout_mode = 2
 theme_override_constants/separation = 5
 
-[node name="Label" type="Label" parent="MainLayout/Sidebar/PathSection"]
+[node name="Label" type="Label" parent="MainLayout/Sidebar/PathSection" unique_id=1006880960]
 layout_mode = 2
 text = "Ruta del archivo (.7z / .rar / .zip):"
 
-[node name="HBox" type="HBoxContainer" parent="MainLayout/Sidebar/PathSection"]
+[node name="HBox" type="HBoxContainer" parent="MainLayout/Sidebar/PathSection" unique_id=854999679]
 layout_mode = 2
 
-[node name="FilePathInput" type="LineEdit" parent="MainLayout/Sidebar/PathSection/HBox"]
+[node name="FilePathInput" type="LineEdit" parent="MainLayout/Sidebar/PathSection/HBox" unique_id=1877600556]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Ruta o user://..."
 
-[node name="BrowseButton" type="Button" parent="MainLayout/Sidebar/PathSection/HBox"]
+[node name="BrowseButton" type="Button" parent="MainLayout/Sidebar/PathSection/HBox" unique_id=1184647365]
 layout_mode = 2
 text = "Buscar"
 
-[node name="PasswordSection" type="VBoxContainer" parent="MainLayout/Sidebar"]
+[node name="PasswordSection" type="VBoxContainer" parent="MainLayout/Sidebar" unique_id=1364613532]
 layout_mode = 2
 theme_override_constants/separation = 5
 
-[node name="Label" type="Label" parent="MainLayout/Sidebar/PasswordSection"]
+[node name="Label" type="Label" parent="MainLayout/Sidebar/PasswordSection" unique_id=1791684665]
 layout_mode = 2
 text = "Contraseña (si es requerido):"
 
-[node name="PasswordInput" type="LineEdit" parent="MainLayout/Sidebar/PasswordSection"]
+[node name="PasswordInput" type="LineEdit" parent="MainLayout/Sidebar/PasswordSection" unique_id=549905882]
 layout_mode = 2
-secret = true
 placeholder_text = "Contraseña de descifrado (AES-256 / XOR)"
+secret = true
 
-[node name="FileListLabel" type="Label" parent="MainLayout/Sidebar"]
+[node name="FileListLabel" type="Label" parent="MainLayout/Sidebar" unique_id=1655144132]
 layout_mode = 2
 text = "Archivos detectados en RAM:"
 
-[node name="FileList" type="ItemList" parent="MainLayout/Sidebar"]
+[node name="FileList" type="ItemList" parent="MainLayout/Sidebar" unique_id=2139868871]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ProgressSection" type="VBoxContainer" parent="MainLayout/Sidebar"]
+[node name="ProgressSection" type="VBoxContainer" parent="MainLayout/Sidebar" unique_id=1241569215]
 layout_mode = 2
 theme_override_constants/separation = 5
 
-[node name="ProgressBar" type="ProgressBar" parent="MainLayout/Sidebar/ProgressSection"]
+[node name="ProgressBar" type="ProgressBar" parent="MainLayout/Sidebar/ProgressSection" unique_id=332394847]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="ActionButtons" type="VBoxContainer" parent="MainLayout/Sidebar"]
+[node name="ActionButtons" type="VBoxContainer" parent="MainLayout/Sidebar" unique_id=1884249893]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Row1" type="HBoxContainer" parent="MainLayout/Sidebar/ActionButtons"]
+[node name="Row1" type="HBoxContainer" parent="MainLayout/Sidebar/ActionButtons" unique_id=1721034904]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="LoadInRam" type="Button" parent="MainLayout/Sidebar/ActionButtons/Row1"]
+[node name="LoadInRam" type="Button" parent="MainLayout/Sidebar/ActionButtons/Row1" unique_id=628737628]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 15
 text = "Cargar en RAM"
 
-[node name="LoadFromDisk" type="Button" parent="MainLayout/Sidebar/ActionButtons/Row1"]
+[node name="LoadFromDisk" type="Button" parent="MainLayout/Sidebar/ActionButtons/Row1" unique_id=744031610]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 15
 text = "Cargar desde Disco"
 
-[node name="SimulateProgressive" type="Button" parent="MainLayout/Sidebar/ActionButtons"]
+[node name="SimulateProgressive" type="Button" parent="MainLayout/Sidebar/ActionButtons" unique_id=1932417449]
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
 text = "Simular Descarga por Partes"
 
-[node name="StatusLabel" type="Label" parent="MainLayout/Sidebar"]
+[node name="StatusLabel" type="Label" parent="MainLayout/Sidebar" unique_id=1836901772]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.462745, 0.733333, 0.898039, 1)
 autowrap_mode = 3
 
-[node name="HBox" type="HBoxContainer" parent="MainLayout/Sidebar"]
+[node name="HBox" type="HBoxContainer" parent="MainLayout/Sidebar" unique_id=1494450543]
 layout_mode = 2
 
-[node name="Back" type="Button" parent="MainLayout/Sidebar/HBox"]
+[node name="Back" type="Button" parent="MainLayout/Sidebar/HBox" unique_id=1580974014]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Volver a Prueba Básica"
 
-[node name="PreviewArea" type="VBoxContainer" parent="MainLayout"]
+[node name="PreviewArea" type="VBoxContainer" parent="MainLayout" unique_id=1221005615]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
-[node name="PanelHeader" type="Panel" parent="MainLayout/PreviewArea"]
+[node name="PanelHeader" type="Panel" parent="MainLayout/PreviewArea" unique_id=2121035772]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainLayout/PreviewArea/PanelHeader"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainLayout/PreviewArea/PanelHeader" unique_id=1812237646]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -151,23 +152,23 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
 
-[node name="PreviewTitle" type="Label" parent="MainLayout/PreviewArea/PanelHeader/HBoxContainer"]
+[node name="PreviewTitle" type="Label" parent="MainLayout/PreviewArea/PanelHeader/HBoxContainer" unique_id=1922456710]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 15
 text = "Visualizando: Ningún archivo seleccionado"
 vertical_alignment = 1
 
-[node name="ExtractToDiskButton" type="Button" parent="MainLayout/PreviewArea/PanelHeader/HBoxContainer"]
+[node name="ExtractToDiskButton" type="Button" parent="MainLayout/PreviewArea/PanelHeader/HBoxContainer" unique_id=1821341918]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Volcar a Disco (Streaming)"
 
-[node name="PreviewPanel" type="Panel" parent="MainLayout/PreviewArea"]
+[node name="PreviewPanel" type="Panel" parent="MainLayout/PreviewArea" unique_id=265879471]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MainLayout/PreviewArea/PreviewPanel"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MainLayout/PreviewArea/PreviewPanel" unique_id=449481511]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -179,14 +180,14 @@ offset_bottom = -15.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextPreview" type="RichTextLabel" parent="MainLayout/PreviewArea/PreviewPanel/ScrollContainer"]
+[node name="TextPreview" type="RichTextLabel" parent="MainLayout/PreviewArea/PreviewPanel/ScrollContainer" unique_id=1068404065]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_font_sizes/normal_font_size = 14
 text = "El contenido del archivo se mostrará aquí..."
 
-[node name="ImagePreview" type="TextureRect" parent="MainLayout/PreviewArea/PreviewPanel"]
+[node name="ImagePreview" type="TextureRect" parent="MainLayout/PreviewArea/PreviewPanel" unique_id=1322930166]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -201,7 +202,7 @@ grow_vertical = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="HexPreview" type="RichTextLabel" parent="MainLayout/PreviewArea/PreviewPanel"]
+[node name="HexPreview" type="RichTextLabel" parent="MainLayout/PreviewArea/PreviewPanel" unique_id=54971696]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -215,8 +216,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/normal_font_size = 13
 
-[node name="FileDialog" type="FileDialog" parent="."]
-title = "Abrir archivo"
+[node name="FileDialog" type="FileDialog" parent="." unique_id=780852084]
+title = "Open a File"
 ok_button_text = "Seleccionar"
 file_mode = 0
 access = 2

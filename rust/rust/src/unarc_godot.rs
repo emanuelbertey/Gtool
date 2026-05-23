@@ -40,7 +40,7 @@ impl Unarc {
         let ext = format_extension.to_lowercase();
 
         if ext == "7z" {
-            match ArchiveFormat::open_multi_volume_7z(&path_bufs, options) {
+            match ArchiveFormat::open_multi_volume_7z(&path_bufs, options.clone()) {
                 Ok(mut archive) => {
                     loop {
                         match archive.next_entry() {
@@ -54,8 +54,12 @@ impl Unarc {
                                     }
                                     match std::fs::File::create(&dest_path) {
                                         Ok(mut out_file) => {
-                                            let read_opts = unarc_rs::unified::ArchiveOptions::new().with_password(&password);
-                                            if let Err(e) = archive.read_to_with_options(&entry, &mut out_file, &read_opts) {
+                                            let result = if password.is_empty() {
+                                                archive.read_to(&entry, &mut out_file)
+                                            } else {
+                                                archive.read_to_with_options(&entry, &mut out_file, &options)
+                                            };
+                                            if let Err(e) = result {
                                                 godot_error!("Error escribiendo flujo al archivo {}: {:?}", dest_path, e);
                                                 return false;
                                             }
@@ -84,7 +88,7 @@ impl Unarc {
                 }
             }
         } else if ext == "zip" {
-            match ArchiveFormat::open_multi_volume_zip(&path_bufs, options) {
+            match ArchiveFormat::open_multi_volume_zip(&path_bufs, options.clone()) {
                 Ok(mut archive) => {
                     loop {
                         match archive.next_entry() {
@@ -98,8 +102,12 @@ impl Unarc {
                                     }
                                     match std::fs::File::create(&dest_path) {
                                         Ok(mut out_file) => {
-                                            let read_opts = unarc_rs::unified::ArchiveOptions::new().with_password(&password);
-                                            if let Err(e) = archive.read_to_with_options(&entry, &mut out_file, &read_opts) {
+                                            let result = if password.is_empty() {
+                                                archive.read_to(&entry, &mut out_file)
+                                            } else {
+                                                archive.read_to_with_options(&entry, &mut out_file, &options)
+                                            };
+                                            if let Err(e) = result {
                                                 godot_error!("Error escribiendo flujo al archivo {}: {:?}", dest_path, e);
                                                 return false;
                                             }
