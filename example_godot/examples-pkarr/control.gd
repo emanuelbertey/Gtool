@@ -106,10 +106,19 @@ func _on_exit_pressed() -> void:
 
 
 func _on_crea_key_pressed() -> void:
-	#keys = peer.key_rand()
-	
+	keys = peer.key_rand()
+	var key_is = false
 	$key_vault.crear_pressed()
-	#$CodeEdit.text = peer.public_key(keys)
+	$CodeEdit.text = peer.public_key(keys)
+	if $keygen.text != "":
+		for i in range(100):
+			if is_mach(str(peer.public_key(keys)),$keygen.text,4):
+				key_is = true
+				return
+		if key_is:
+			$CodeEdit.text = str(keys)
+		else:
+			prints("no mach ")
 	#prints("creando key ", keys , "sizekey : " , keys.size())
 	pass # Replace with function body.
 
@@ -131,3 +140,8 @@ func _on_load_key_pressed() -> void:
 	prints("aqui se carga")
 	$key_vault.load_data()
 	pass # Replace with function body.
+
+func is_mach(cadena: String, comparacion: String, cantidad: int) -> bool:
+	# .left(cantidad) toma los primeros n caracteres
+	# Comparamos si el inicio de la primera cadena es igual a la segunda
+	return cadena.left(cantidad) == comparacion.left(cantidad)

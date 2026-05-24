@@ -29,7 +29,7 @@ func _ready() -> void:
 	#prints(peer.get_secret_bytes())
 	#peer.info_ips()
 	prints("creando key ", peer.key_rand())
-
+	
 	var key = [
 		199, 133, 251, 69, 66, 206, 61, 213, 151, 163, 166, 14, 142, 46, 94, 231,
 		66, 126, 8, 67, 114, 56, 186, 37, 12, 18, 111, 207, 0, 223, 229, 145,

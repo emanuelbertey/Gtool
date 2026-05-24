@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://rqq3oovj8hcl"]
 
 [ext_resource type="Script" uid="uid://c4r8w2wlxmkyd" path="res://example_godot/iamodel/xlstm_large_chat.gd" id="1_2pabi"]
+[ext_resource type="Script" uid="uid://ci6mpjhb5456t" path="res://example_godot/iamodel/h_slider.gd" id="2_ctnib"]
 
 [node name="miiodel" type="Control" unique_id=1461080153]
 layout_mode = 3
@@ -64,7 +65,7 @@ model_file = "res://large_model.mpk"
 tokenizer_path = "res://tokenizer.json"
 script = ExtResource("1_2pabi")
 
-[node name="Button" type="Button" parent="XLSTMLargeChat" unique_id=1894643642]
+[node name="exit" type="Button" parent="XLSTMLargeChat" unique_id=1894643642]
 anchors_preset = -1
 anchor_right = 0.072000004
 anchor_bottom = 0.048
@@ -74,4 +75,28 @@ offset_right = 1055.056
 offset_bottom = 21.896
 text = "exit"
 
-[connection signal="pressed" from="XLSTMLargeChat/Button" to="XLSTMLargeChat" method="_on_button_pressed"]
+[node name="length" type="HSlider" parent="." unique_id=831444475]
+layout_mode = 0
+offset_left = 719.0
+offset_top = 8.0
+offset_right = 868.0
+offset_bottom = 24.0
+min_value = 10.0
+max_value = 1000.0
+value = 60.0
+rounded = true
+tick_count = 1
+script = ExtResource("2_ctnib")
+
+[node name="Label" type="Label" parent="length" unique_id=1213167682]
+layout_mode = 0
+offset_left = 165.0
+offset_top = -4.0
+offset_right = 235.0
+offset_bottom = 32.0
+text = "60"
+
+[connection signal="pressed" from="XLSTMLargeChat/exit" to="XLSTMLargeChat" method="_on_button_pressed"]
+[connection signal="drag_ended" from="length" to="length" method="_on_drag_ended"]
+[connection signal="drag_started" from="length" to="length" method="_on_drag_started"]
+[connection signal="value_changed" from="length" to="length" method="_on_value_changed"]

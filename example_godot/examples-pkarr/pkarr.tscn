@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://c2qb1lhdrail3"]
 
-[ext_resource type="Script" uid="uid://o416t0ckjfwa" path="res://example_godot/examples-pkarr/control.gd" id="1_0fbet"]
+[ext_resource type="Script" uid="uid://r8sdbe7ccxw4" path="res://example_godot/examples-pkarr/control.gd" id="1_0fbet"]
 [ext_resource type="Script" uid="uid://d0ovu0es7j3ju" path="res://example_godot/examples-pkarr/button_3.gd" id="2_62e2m"]
-[ext_resource type="Script" uid="uid://dbswwj815s38d" path="res://example_godot/examples-pkarr/key_vault.gd" id="3_ahawr"]
+[ext_resource type="Script" uid="uid://c0mp60iupldkw" path="res://example_godot/examples-pkarr/key_vault.gd" id="3_ahawr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_202ya"]
 bg_color = Color(0.84209746, 0.5075795, 0.20788595, 1)
@@ -157,10 +157,11 @@ script = ExtResource("3_ahawr")
 
 [node name="LineEdit" type="LineEdit" parent="key_vault" unique_id=1730878550]
 layout_mode = 0
-offset_left = 414.0
-offset_top = 107.0
-offset_right = 560.0
-offset_bottom = 144.0
+offset_left = 563.0
+offset_top = 106.0
+offset_right = 788.0
+offset_bottom = 143.0
+placeholder_text = "pass"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="key_vault" unique_id=691274021]
 layout_mode = 0
@@ -180,6 +181,14 @@ text = "load key"
 [node name="crea key" type="Button" parent="key_vault/HBoxContainer" unique_id=1668977059]
 layout_mode = 2
 text = "crea key "
+
+[node name="keygen" type="LineEdit" parent="." unique_id=370407439]
+layout_mode = 0
+offset_left = 422.0
+offset_top = 111.0
+offset_right = 552.0
+offset_bottom = 142.0
+placeholder_text = "search key gen"
 
 [connection signal="pressed" from="resolver" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="pubicar" to="." method="_on_button_2_pressed"]

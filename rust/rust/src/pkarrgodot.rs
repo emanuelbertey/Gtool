@@ -25,6 +25,8 @@ use std::convert::TryInto;
 #[class(base=Node)]
 pub struct Gpkarr {
     base: Base<Node>,
+    #[export]
+    pub ttl: u32,
 }
 
 #[godot_api]
@@ -33,6 +35,7 @@ impl INode for Gpkarr {
          godot_print!("Gpkarr");
         Self { 
             base,
+            ttl: 30,
         }
     }
     
@@ -87,16 +90,29 @@ impl Gpkarr {
 
    #[func]
     pub fn key_rand(&self) -> PackedByteArray {
-
         let keypair = Keypair::random();
         let secret_bytes: [u8; 32] = keypair.secret_key();
 
         let mut packed = PackedByteArray::new();
         for byte in secret_bytes {
             packed.push(byte);
-
         }
+        packed
+    }
 
+    #[func]
+    pub fn seed_to_key(&self, seed: GString) -> PackedByteArray {
+        use sha2::{Sha256, Digest};
+
+        let seed_str = seed.to_string();
+        let mut hasher = Sha256::new();
+        hasher.update(seed_str.as_bytes());
+        let hash = hasher.finalize();
+
+        let mut packed = PackedByteArray::new();
+        for byte in hash.iter() {
+            packed.push(*byte);
+        }
         packed
     }
 
@@ -105,7 +121,7 @@ impl Gpkarr {
 
 
 #[func]
-pub fn prepare_packet(&self, key: GString, value: GString, mode: GString, relays: PackedStringArray, keypass: PackedByteArray, ttl: u32) -> bool {
+pub fn prepare_packet(&self, key: GString, value: GString, mode: GString, relays: PackedStringArray, keypass: PackedByteArray) -> bool {
    
    
     let bytes = keypass.to_vec();
@@ -181,7 +197,7 @@ let txt_converted: TXT = match value_string.as_str().try_into() {
     };
 
         let signed_packet = match SignedPacket::builder()
-        .txt(converted, txt_converted, ttl)
+        .txt(converted, txt_converted, self.ttl)
         .sign(&keypair)
     {
 
