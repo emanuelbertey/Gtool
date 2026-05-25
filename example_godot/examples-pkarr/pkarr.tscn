@@ -89,7 +89,6 @@ offset_left = 94.0
 offset_top = 163.0
 offset_right = 627.0
 offset_bottom = 216.0
-text = "tkucztxt7xhrb41miqb7xknhijngpgy7tyhete15ycok7naaonsy"
 placeholder_text = "public key"
 
 [node name="mode" type="CodeEdit" parent="." unique_id=432487802]

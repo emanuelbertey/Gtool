@@ -24,9 +24,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_kw2sm")
 
-[node name="VBoxContainer" parent="." unique_id=658975175 instance=ExtResource("2_b4xnm")]
-layout_mode = 0
-
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1085297530]
 layout_mode = 1
 anchors_preset = 15
@@ -101,11 +98,11 @@ layout_mode = 2
 text = "itorren"
 script = ExtResource("12_lmec7")
 
-[node name="Button" type="Button" parent="TabContainer" unique_id=2127318222]
+[node name="kem" type="Button" parent="TabContainer" unique_id=2127318222]
 layout_mode = 2
 text = "kem"
 
-[node name="Button2" type="Button" parent="TabContainer" unique_id=764467060]
+[node name="strsim" type="Button" parent="TabContainer" unique_id=764467060]
 layout_mode = 2
 text = "strsim"
 
@@ -126,6 +123,14 @@ backspace_deletes_composite_character_enabled = true
 wrap_mode = 1
 indent_wrapped_lines = true
 tab_input_mode = false
+
+[node name="VBoxContainer" parent="." unique_id=658975175 instance=ExtResource("2_b4xnm")]
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [connection signal="mouse_entered" from="TabContainer/nostr gift" to="TabContainer/nostr gift" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="TabContainer/nostr gift" to="TabContainer/nostr gift" method="_on_mouse_exited"]
@@ -150,4 +155,6 @@ tab_input_mode = false
 [connection signal="pressed" from="TabContainer/minrnn" to="." method="_on_minrnn_pressed"]
 [connection signal="mouse_entered" from="TabContainer/itorrent" to="TabContainer/itorrent" method="_on_mouse_entered"]
 [connection signal="pressed" from="TabContainer/itorrent" to="." method="_on_itorrent_pressed"]
+[connection signal="pressed" from="TabContainer/kem" to="." method="_on_kem_pressed"]
+[connection signal="pressed" from="TabContainer/strsim" to="." method="_on_strsim_pressed"]
 [connection signal="pressed" from="TabContainer/compr" to="." method="_on_compr_pressed"]

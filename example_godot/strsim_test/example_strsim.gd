@@ -96,12 +96,12 @@ func _update_item_list(search_text: String) -> void:
 		
 	# Ordenar por el score (de mayor a menor) y, en caso de empate, alfabéticamente por Godot
 	scored_items.sort_custom(func(a, b):
-		if abs(a.score - b.score) > 0.0001:
+		if abs(a.score - b.score) > 0.001:
 			return a.score > b.score
 		return a.text < b.text
 	)
 	
-	var threshold = 0.70 # Umbral mínimo de similitud para mostrar
+	var threshold = 0.50 # Umbral mínimo de similitud para mostrar
 	
 	# Agregar al ItemList
 	for item_data in scored_items:

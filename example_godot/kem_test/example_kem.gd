@@ -176,3 +176,8 @@ func _run_benchmark() -> void:
 
 func _on_clear_pressed() -> void:
 	$panel.text = ""
+
+
+func _on_exit_pressed() -> void:
+	queue_free()
+	pass # Replace with function body.

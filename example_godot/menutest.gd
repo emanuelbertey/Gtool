@@ -108,3 +108,21 @@ func _on_compr_pressed() -> void:
 	prints("⭐️ DATOS AL NODO INSTANCIADO ⭐️" )
 	pass # Replace with function body.
 	pass # Replace with function body.
+
+
+func _on_kem_pressed() -> void:
+	var data_exten = load("res://example_godot/kem_test/kem_test.tscn").instantiate()
+
+	self.add_child(data_exten)
+	
+	prints("⭐️ DATOS AL NODO INSTANCIADO ⭐️" )
+	pass # Replace with function body.
+
+
+func _on_strsim_pressed() -> void:
+	var data_exten = load("res://example_godot/strsim_test/example_strsim.tscn").instantiate()
+
+	self.add_child(data_exten)
+	
+	prints("⭐️ DATOS AL NODO INSTANCIADO ⭐️" )
+	pass # Replace with function body.

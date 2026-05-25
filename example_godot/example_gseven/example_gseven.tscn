@@ -1,0 +1,78 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://example_godot/example_gseven/example_gseven.gd" id="1_script"]
+
+[node name="ExampleGseven" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.15, 0.15, 0.2, 1)
+
+[node name="PathInput" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 20.0
+offset_right = 650.0
+offset_bottom = 50.0
+placeholder_text = "Ruta al archivo .7z (ej: C:/archivos/ejemplo.7z)"
+
+[node name="Browse" type="Button" parent="."]
+layout_mode = 0
+offset_left = 660.0
+offset_top = 20.0
+offset_right = 740.0
+offset_bottom = 50.0
+text = "Buscar"
+
+[node name="PassInput" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 60.0
+offset_right = 300.0
+offset_bottom = 90.0
+placeholder_text = "Contrasena (opcional)"
+secret = true
+
+[node name="TestBtn" type="Button" parent="."]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 100.0
+offset_right = 250.0
+offset_bottom = 140.0
+theme_override_font_sizes/font_size = 18
+text = "Probar Gseven"
+
+[node name="Label" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 50.0
+offset_top = 160.0
+offset_right = -50.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 16
+text = "Resultados apareceran aqui..."
+
+[node name="FileDialog" type="FileDialog" parent="."]
+file_mode = 0
+access = 2
+filters = ["*.7z ; 7z Archives", "*.7z.001 ; 7z Multi-volume"]
+
+[connection signal="pressed" from="Browse" to="." method="_on_browse_pressed"]
+[connection signal="pressed" from="TestBtn" to="." method="_on_test_pressed"]
+[connection signal="file_selected" from="FileDialog" to="." method="_on_file_selected"]

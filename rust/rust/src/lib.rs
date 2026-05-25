@@ -70,3 +70,5 @@ conpilado con msvc no es necesario */
 mod xlstm_large_node;
 mod minrnn_node;
 mod unarc_godot;
+mod grrar;
+mod gseven_godot;

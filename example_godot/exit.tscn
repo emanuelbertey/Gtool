@@ -1,36 +1,50 @@
-[gd_scene load_steps=2 format=3 uid="uid://bwlmqs4l40mxf"]
+[gd_scene format=3 uid="uid://bwlmqs4l40mxf"]
 
-[ext_resource type="Script" uid="uid://bi3agqf2j8dyy" path="res://example_godot/examples-pkarr/v_box_container.gd" id="1_vinbu"]
+[ext_resource type="Script" uid="uid://daiqkybnxmj3f" path="res://example_godot/examples-pkarr/v_box_container.gd" id="1_vinbu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hn1b2"]
+bg_color = Color(0, 0.11372549, 0.16862746, 1)
+border_width_left = 4
+border_width_top = 2
+border_width_right = 6
+border_width_bottom = 4
+border_color = Color(0.15294118, 0.10980392, 0.8, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 30
 
 [node name="VBoxContainer" type="Control" unique_id=658975175]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 927.0
-offset_bottom = 667.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_force_pass_scroll_events = false
 script = ExtResource("1_vinbu")
 
 [node name="Window" type="Window" parent="." unique_id=1225395629]
+transparent_bg = true
 oversampling_override = 1.0
 position = Vector2i(200, 200)
 size = Vector2i(265, 120)
 visible = false
 unresizable = true
 borderless = true
+transparent = true
 
-[node name="ColorRect" type="ColorRect" parent="Window" unique_id=245741602]
-clip_contents = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0.5882353, 0.8352941, 1)
+[node name="Panel" type="Panel" parent="Window" unique_id=902518944]
+offset_right = 269.0
+offset_bottom = 123.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hn1b2")
 
 [node name="Label" type="Label" parent="Window" unique_id=744031007]
-offset_left = 3.0
-offset_top = 5.0
-offset_right = 43.0
-offset_bottom = 28.0
+offset_left = 23.0
+offset_top = 8.0
+offset_right = 250.0
+offset_bottom = 64.0
 
 [node name="GridContainer" type="GridContainer" parent="Window" unique_id=2046459849]
 offset_left = 63.0
