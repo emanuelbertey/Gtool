@@ -24,15 +24,15 @@ color = Color(0.15, 0.15, 0.2, 1)
 layout_mode = 0
 offset_left = 50.0
 offset_top = 20.0
-offset_right = 650.0
+offset_right = 580.0
 offset_bottom = 50.0
-placeholder_text = "Ruta al archivo .7z (ej: C:/archivos/ejemplo.7z)"
+placeholder_text = "Ruta al .7z"
 
 [node name="Browse" type="Button" parent="."]
 layout_mode = 0
-offset_left = 660.0
+offset_left = 590.0
 offset_top = 20.0
-offset_right = 740.0
+offset_right = 660.0
 offset_bottom = 50.0
 text = "Buscar"
 
@@ -40,19 +40,44 @@ text = "Buscar"
 layout_mode = 0
 offset_left = 50.0
 offset_top = 60.0
-offset_right = 300.0
+offset_right = 260.0
 offset_bottom = 90.0
 placeholder_text = "Contrasena (opcional)"
 secret = true
 
-[node name="TestBtn" type="Button" parent="."]
+[node name="ListBtn" type="Button" parent="."]
+layout_mode = 0
+offset_left = 270.0
+offset_top = 60.0
+offset_right = 400.0
+offset_bottom = 90.0
+text = "Listar Entradas"
+
+[node name="EntrySelect" type="LineEdit" parent="."]
 layout_mode = 0
 offset_left = 50.0
-offset_top = 100.0
-offset_right = 250.0
-offset_bottom = 140.0
-theme_override_font_sizes/font_size = 18
-text = "Probar Gseven"
+offset_top = 105.0
+offset_right = 350.0
+offset_bottom = 135.0
+placeholder_text = "Indices (ej: 0,2,4 o 'all')"
+
+[node name="ExtractDisk" type="Button" parent="."]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 145.0
+offset_right = 220.0
+offset_bottom = 180.0
+theme_override_font_sizes/font_size = 15
+text = "Extraer a Disco"
+
+[node name="ExtractRAM" type="Button" parent="."]
+layout_mode = 0
+offset_left = 230.0
+offset_top = 145.0
+offset_right = 460.0
+offset_bottom = 180.0
+theme_override_font_sizes/font_size = 15
+text = "Extraer a Buffer + RAM"
 
 [node name="Label" type="RichTextLabel" parent="."]
 layout_mode = 1
@@ -60,19 +85,22 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 50.0
-offset_top = 160.0
+offset_top = 200.0
 offset_right = -50.0
 offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 16
-text = "Resultados apareceran aqui..."
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+text = "Selecciona .7z, lista entradas, elige indices y presiona 'Extraer a Disco' (sin RAM) o 'Extraer a Buffer + RAM'"
 
 [node name="FileDialog" type="FileDialog" parent="."]
 file_mode = 0
 access = 2
-filters = ["*.7z ; 7z Archives", "*.7z.001 ; 7z Multi-volume"]
+filters = ["*.7z ; 7z Archive", "*.7z.001 ; 7z Multi-volume (first part)"]
 
 [connection signal="pressed" from="Browse" to="." method="_on_browse_pressed"]
-[connection signal="pressed" from="TestBtn" to="." method="_on_test_pressed"]
+[connection signal="pressed" from="ListBtn" to="." method="_on_list_pressed"]
+[connection signal="pressed" from="ExtractDisk" to="." method="_on_extract_disk_pressed"]
+[connection signal="pressed" from="ExtractRAM" to="." method="_on_extract_ram_pressed"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_selected"]

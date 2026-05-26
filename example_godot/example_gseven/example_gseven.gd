@@ -5,88 +5,200 @@ var gseven = Gseven.new()
 const EXTRACT_DIR = "user://gseven_extracted"
 
 func _ready():
-	$Label.text = "Listo. Selecciona un archivo .7z para probar Gseven."
+	$Label.text = "Selecciona un .7z y presiona Listar Entradas"
 
-func _on_test_pressed() -> void:
-	$Label.text = "Iniciando prueba...\n"
-
+func _on_list_pressed() -> void:
 	var path = $PathInput.text
 	if path == "":
-		$Label.text += "Error: Introduce una ruta de archivo .7z\n"
+		$Label.text = "Error: Introduce una ruta"
 		return
 
 	var global = ProjectSettings.globalize_path(path)
 	if not FileAccess.file_exists(global):
-		$Label.text += "Error: El archivo no existe: %s\n" % global
+		$Label.text = "Error: No existe: %s" % global
 		return
 
-	var pass = $PassInput.text
+	var passg = $PassInput.text
+	var is_multi = global.ends_with(".001")
+	var paths_arr: Array[String]
+	if is_multi:
+		paths_arr = _gather_volumes(global)
+		if paths_arr.is_empty():
+			$Label.text = "Error: No se encontraron volumenes"
+			return
 
-	var absolute_extract_dir = ProjectSettings.globalize_path(EXTRACT_DIR)
-
-	# 1. Listar entradas
-	$Label.text += "\n1. Leyendo entradas con Gseven:\n"
 	var entries
-	if pass == "":
-		entries = gseven.get_entries(global)
+	if is_multi:
+		if passg == "":
+			entries = gseven.get_entries_multi_volume(paths_arr)
+		else:
+			entries = gseven.get_entries_multi_volume_with_password(paths_arr, passg)
 	else:
-		entries = gseven.get_entries_with_password(global, pass)
+		if passg == "":
+			entries = gseven.get_entries(global)
+		else:
+			entries = gseven.get_entries_with_password(global, passg)
 
 	if entries.size() == 0:
-		$Label.text += "   No se encontraron entradas (contraseña incorrecta?)\n"
+		$Label.text = "No se encontraron entradas (pass incorrecta?)"
 		return
 
-	for entry in entries:
-		var info = "   - %s | %d bytes" % [entry["name"], entry["size"]]
-		if entry["is_directory"]: info += " [DIR]"
-		$Label.text += info + "\n"
+	var total_size = 0
+	var text = "Entradas (%d):\n\n" % entries.size()
+	for i in entries.size():
+		var e = entries[i]
+		var name = e["name"]
+		var size = e["size"]
+		var compressed = e.get("compressed_size", 0)
+		var dir_mark = " [DIR]" if e["is_directory"] else ""
+		total_size += size
+		text += "%d: %s  (%s -> %s)%s\n" % [i, name, _fmt(compressed), _fmt(size), dir_mark]
 
-	# 2. Leer primera entrada en memoria
-	$Label.text += "\n2. Leyendo primera entrada en memoria:\n"
-	var first_name = entries[0]["name"]
-	if not entries[0]["is_directory"]:
-		var bytes
-		if pass == "":
-			bytes = gseven.extract_entry_to_buffer(global, first_name)
-		else:
-			bytes = gseven.extract_entry_to_buffer(global, first_name, pass)
-		if bytes.size() > 0:
-			var preview = bytes.get_string_from_utf8()
-			$Label.text += "   '%s' -> %d bytes leidos\n" % [first_name, bytes.size()]
-			if preview.length() < 200:
-				$Label.text += "   Contenido: '%s'\n" % preview.strip_edges()
-		else:
-			$Label.text += "   Error leyendo '%s'\n" % first_name
+	text += "\nTotal descomprimido: %s" % _fmt(total_size)
+	$Label.text = text
 
-	# 3. Extraer todo
-	$Label.text += "\n3. Extrayendo todo a:\n   %s\n" % absolute_extract_dir
-	var success
-	if pass == "":
-		success = gseven.extract_all(global, absolute_extract_dir)
+	set_meta("entries", entries)
+	set_meta("paths_arr", paths_arr)
+	set_meta("is_multi", is_multi)
+	set_meta("global_path", global)
+
+func _parse_indices() -> Array[int]:
+	var entries = get_meta("entries", [])
+	if entries.is_empty():
+		return []
+
+	var raw = $EntrySelect.text.strip_edges()
+	if raw == "all":
+		var all: Array[int] = []
+		for i in entries.size():
+			all.append(i)
+		return all
+
+	var out: Array[int] = []
+	for part in raw.split(","):
+		var t = part.strip_edges()
+		if t.is_valid_int():
+			var idx = t.to_int()
+			if idx >= 0 and idx < entries.size():
+				out.append(idx)
+	return out
+
+func _get_entry_meta() -> Dictionary:
+	return {
+		entries = get_meta("entries", []),
+		is_multi = get_meta("is_multi", false),
+		paths_arr = get_meta("paths_arr", []),
+		global_path = get_meta("global_path", ""),
+	}
+
+func _extract_one(name: String, dest: String, m: Dictionary) -> bool:
+	if m.is_multi:
+		return gseven.extract_entry_multi_volume(m.paths_arr, name, dest, $PassInput.text)
 	else:
-		success = gseven.extract_all(global, absolute_extract_dir, pass)
-	if success:
-		$Label.text += "   Extraccion completa exitosa!\n"
-	else:
-		$Label.text += "   Error en extraccion\n"
+		return gseven.extract_entry(m.global_path, name, dest, $PassInput.text)
 
-	# 4. Extraer solo la primera entrada a disco
-	if not entries[0]["is_directory"]:
-		$Label.text += "\n4. Extrayendo solo '%s':\n" % first_name
-		var single_dest = absolute_extract_dir + "/_single_" + first_name
-		var ok
-		if pass == "":
-			ok = gseven.extract_entry(global, first_name, single_dest)
-		else:
-			ok = gseven.extract_entry(global, first_name, single_dest, pass)
+func _extract_one_to_buf(name: String, m: Dictionary) -> PackedByteArray:
+	if m.is_multi:
+		return gseven.extract_entry_multi_volume_to_buffer(m.paths_arr, name, $PassInput.text)
+	else:
+		return gseven.extract_entry_to_buffer(m.global_path, name, $PassInput.text)
+
+# ---- Botones ----
+
+func _on_extract_disk_pressed() -> void:
+	var entries = get_meta("entries", [])
+	if entries.is_empty():
+		$Label.text = "Primero lista las entradas"
+		return
+
+	var indices = _parse_indices()
+	if indices.is_empty():
+		$Label.text = "Indices invalidos (ej: 0,2,4 o 'all')"
+		return
+
+	var m = _get_entry_meta()
+	var dest_base = ProjectSettings.globalize_path(EXTRACT_DIR)
+	var text = "Extrayendo a disco (%d entrada(s)):\n\n" % indices.size()
+
+	for idx in indices:
+		var e = entries[idx]
+		var name = e["name"]
+		if e["is_directory"]:
+			text += "[SKIP] %s es DIR\n" % name
+			continue
+
+		var dest = dest_base + "/" + name
+		var ok = _extract_one(name, dest, m)
 		if ok:
-			$Label.text += "   Extraida a: %s\n" % single_dest
+			var size = _fmt(e["size"])
+			text += "[OK] %s  (%s)\n" % [name, size]
 		else:
-			$Label.text += "   Error extrayendo entrada individual\n"
+			text += "[ERR] %s\n" % name
+
+	$Label.text = text
+
+func _on_extract_ram_pressed() -> void:
+	var entries = get_meta("entries", [])
+	if entries.is_empty():
+		$Label.text = "Primero lista las entradas"
+		return
+
+	var indices = _parse_indices()
+	if indices.is_empty():
+		$Label.text = "Indices invalidos (ej: 0,2,4 o 'all')"
+		return
+
+	var m = _get_entry_meta()
+	var dest_base = ProjectSettings.globalize_path(EXTRACT_DIR)
+	var text = "Leyendo a buffer (%d entrada(s)):\n\n" % indices.size()
+
+	for idx in indices:
+		var e = entries[idx]
+		var name = e["name"]
+		if e["is_directory"]:
+			text += "[SKIP] %s es DIR\n" % name
+			continue
+
+		var mem_before = OS.get_static_memory_usage()
+		var buf = _extract_one_to_buf(name, m)
+		var mem_after = OS.get_static_memory_usage()
+		var ram_delta = mem_after - mem_before
+
+		if buf.size() == 0:
+			text += "[ERR] %s\n" % name
+			continue
+
+		var buf_fmt = _fmt(buf.size())
+		text += "[OK] %s  buffer: %s  RAM: +%s\n" % [name, buf_fmt, _fmt(max(ram_delta, 0))]
+
+		# Tambien extraer a disco para tener el archivo
+		var dest = dest_base + "/" + name
+		_extract_one(name, dest, m)
+
+	$Label.text = text
+
+func _fmt(bytes: int) -> String:
+	if bytes < 1024:
+		return "%d B" % bytes
+	elif bytes < 1048576:
+		return "%.1f KB" % (bytes / 1024.0)
+	else:
+		return "%.2f MB" % (bytes / 1048576.0)
+
+func _gather_volumes(first: String) -> Array[String]:
+	var out: Array[String] = []
+	var base = first.trim_suffix(".001")
+	var i = 1
+	while true:
+		var vol = base + ".%03d" % i
+		if not FileAccess.file_exists(vol):
+			break
+		out.append(vol)
+		i += 1
+	return out
 
 func _on_file_selected(path: String) -> void:
 	$PathInput.text = path
-	$FileDialog.visible = false
 
 func _on_browse_pressed() -> void:
 	$FileDialog.popup_centered()

@@ -259,21 +259,26 @@ impl Gseven {
                 return false;
             }
         };
-        let data = match reader.read_file(&target) {
-            Ok(d) => d,
-            Err(e) => {
-                godot_error!("Gseven: {:?}", e);
-                return false;
+        let mut found = false;
+        let result = reader.for_each_entries(|entry, data| {
+            if entry.name() == target && !entry.is_directory() {
+                found = true;
+                if let Some(parent) = Path::new(&dest).parent() {
+                    let _ = std::fs::create_dir_all(parent);
+                }
+                let mut file = std::fs::File::create(&dest)?;
+                std::io::copy(data, &mut file)?;
+                Ok(true)
+            } else {
+                Ok(false)
             }
-        };
-        if let Some(parent) = Path::new(&dest).parent() {
-            if let Err(e) = std::fs::create_dir_all(parent) {
-                godot_error!("Gseven: {:?}", e);
-                return false;
+        });
+        match result {
+            Ok(_) if found => true,
+            Ok(_) => {
+                godot_error!("Gseven: entry not found: {}", target);
+                false
             }
-        }
-        match std::fs::write(&dest, &data) {
-            Ok(_) => true,
             Err(e) => {
                 godot_error!("Gseven: {:?}", e);
                 false

@@ -1,0 +1,165 @@
+[gd_scene format=3 uid="uid://cfvt5n5h366kh"]
+
+[ext_resource type="Script" uid="uid://d4k884d0narq0" path="res://example_godot/bit-w/bits.gd" id="1_cn8gx"]
+[ext_resource type="Script" uid="uid://cia32krj6nipf" path="res://example_godot/bit-w/bitwisw2.gd" id="3_p3b8h"]
+
+[node name="byte_bit" type="Control" unique_id=888149046]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cn8gx")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1523291623]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.458824, 0.45098, 1, 1)
+
+[node name="Label" type="Label" parent="." unique_id=111150699]
+layout_mode = 0
+offset_right = 302.0
+offset_bottom = 49.0
+text = "imprime bits en representacion binaria
+tiene operaciones binarias "
+
+[node name="bit8" type="Button" parent="." unique_id=731462418]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 103.0
+offset_right = 130.0
+offset_bottom = 134.0
+text = "8 bit print"
+
+[node name="bit16" type="Button" parent="." unique_id=890448155]
+layout_mode = 0
+offset_left = 217.0
+offset_top = 102.0
+offset_right = 311.0
+offset_bottom = 133.0
+text = "16 bit print"
+
+[node name="bit128" type="Button" parent="." unique_id=1443023422]
+layout_mode = 0
+offset_left = 323.0
+offset_top = 102.0
+offset_right = 426.0
+offset_bottom = 133.0
+text = "128 bit print"
+
+[node name="bit4048" type="Button" parent="." unique_id=18924074]
+layout_mode = 0
+offset_left = 435.0
+offset_top = 102.0
+offset_right = 547.0
+offset_bottom = 133.0
+text = "4048 bit print"
+
+[node name="byte_bit2" type="Control" parent="." unique_id=749950202]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_bottom = 249.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_p3b8h")
+
+[node name="XOR" type="Button" parent="byte_bit2" unique_id=1707895014]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 0.2
+offset_left = 72.0
+offset_top = 21.0
+offset_right = 106.0
+offset_bottom = 2.2
+text = "xor"
+
+[node name="XOR_invert" type="Button" parent="byte_bit2" unique_id=1928581973]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 0.2
+offset_left = 112.0
+offset_top = 20.0
+offset_right = 212.0
+offset_bottom = 1.2
+text = "xor inverter"
+
+[node name="AND" type="Button" parent="byte_bit2" unique_id=421868922]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 0.2
+offset_left = 219.0
+offset_top = 21.0
+offset_right = 257.0
+offset_bottom = 2.2
+text = "and"
+
+[node name="OR" type="Button" parent="byte_bit2" unique_id=1740832816]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 0.2
+offset_left = 263.0
+offset_top = 21.0
+offset_right = 297.0
+offset_bottom = 2.2
+text = "or"
+
+[node name="NAND" type="Button" parent="byte_bit2" unique_id=1715861433]
+layout_mode = 0
+offset_left = 410.0
+offset_top = 21.0
+offset_right = 458.0
+offset_bottom = 52.0
+text = "nand"
+
+[node name="NOR" type="Button" parent="byte_bit2" unique_id=1392164858]
+layout_mode = 0
+offset_left = 362.0
+offset_top = 22.0
+offset_right = 397.0
+offset_bottom = 53.0
+text = "nor"
+
+[node name="XNOR" type="Button" parent="byte_bit2" unique_id=2069087229]
+layout_mode = 0
+offset_left = 309.0
+offset_top = 22.0
+offset_right = 353.0
+offset_bottom = 53.0
+text = "xnor"
+
+[node name="CheckButton" type="CheckButton" parent="byte_bit2" unique_id=221924415]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 69.0
+offset_right = 52.0
+offset_bottom = 93.0
+text = "imprimir"
+
+[node name="salir" type="Button" parent="." unique_id=1459406592]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 102.0
+offset_right = 61.0
+offset_bottom = 133.0
+text = "salir"
+
+[connection signal="pressed" from="bit8" to="." method="_on_bit_8_pressed"]
+[connection signal="pressed" from="bit16" to="." method="_on_bit_16_pressed"]
+[connection signal="pressed" from="bit128" to="." method="_on_bit_128_pressed"]
+[connection signal="pressed" from="bit4048" to="." method="_on_bit_4048_pressed"]
+[connection signal="pressed" from="byte_bit2/XOR" to="byte_bit2" method="_on_xor_pressed"]
+[connection signal="pressed" from="byte_bit2/XOR_invert" to="byte_bit2" method="_on_xor_2_pressed"]
+[connection signal="pressed" from="byte_bit2/AND" to="byte_bit2" method="_on_and_pressed"]
+[connection signal="pressed" from="byte_bit2/OR" to="byte_bit2" method="_on_or_pressed"]
+[connection signal="pressed" from="byte_bit2/NAND" to="byte_bit2" method="_on_nand_pressed"]
+[connection signal="pressed" from="byte_bit2/NOR" to="byte_bit2" method="_on_nor_pressed"]
+[connection signal="pressed" from="byte_bit2/XNOR" to="byte_bit2" method="_on_xnor_pressed"]
+[connection signal="pressed" from="salir" to="." method="_on_salir_pressed"]

@@ -1,0 +1,78 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://example_godot/file_hasher/file_hasher.gd" id="1_script"]
+
+[node name="FileHasher" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.15, 0.15, 0.2, 1)
+
+[node name="PathInput" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 20.0
+offset_right = 650.0
+offset_bottom = 50.0
+placeholder_text = "Ruta a archivo o directorio"
+
+[node name="Browse" type="Button" parent="."]
+layout_mode = 0
+offset_left = 660.0
+offset_top = 20.0
+offset_right = 740.0
+offset_bottom = 50.0
+text = "Buscar"
+
+[node name="RecursiveCheck" type="CheckButton" parent="."]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 60.0
+offset_right = 200.0
+offset_bottom = 90.0
+text = "Subcarpetas"
+
+[node name="HashBtn" type="Button" parent="."]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 100.0
+offset_right = 250.0
+offset_bottom = 140.0
+theme_override_font_sizes/font_size = 18
+text = "Calcular Hash"
+
+[node name="Output" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 50.0
+offset_top = 160.0
+offset_right = -50.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+text = "Selecciona un archivo o directorio y presiona 'Calcular Hash'"
+
+[node name="FileDialog" type="FileDialog" parent="."]
+file_mode = 3
+access = 2
+
+[connection signal="pressed" from="Browse" to="." method="_on_browse_pressed"]
+[connection signal="pressed" from="HashBtn" to="." method="_on_hash_pressed"]
+[connection signal="file_selected" from="FileDialog" to="." method="_on_file_selected"]
+[connection signal="dir_selected" from="FileDialog" to="." method="_on_dir_selected"]
