@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://example_godot/gohash_gpu/gohash_gpu_dual_thread_test.gd" id="1"]
+
+[node name="GoHashGpuDualThreadTest" type="Node"]
+script = ExtResource("1")

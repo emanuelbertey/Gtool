@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://cokg55ivwn23a"]
+
+[ext_resource type="Script" uid="uid://depb7wf6p5h8n" path="res://example_godot/cuckoo_hash_text/cuckoo_hash_text.gd" id="1_script"]
+
+[node name="cuckoo_hash_text" type="Control" unique_id=1116741636]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Panel" type="Panel" parent="." unique_id=558699561]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LineEdit" type="LineEdit" parent="Panel" unique_id=956335506]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 380.0
+offset_bottom = 50.0
+text = "hola mundo"
+placeholder_text = "Escribe un texto..."
+
+[node name="Button" type="Button" parent="Panel" unique_id=1500302411]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 20.0
+offset_right = 500.0
+offset_bottom = 50.0
+text = "Hash & Verificar"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel" unique_id=1421636713]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 70.0
+offset_right = 780.0
+offset_bottom = 580.0

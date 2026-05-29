@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://3y3d3371q7rl"
+path="res://.godot/imported/siphash16_multi_targets.glsl-3d530fccf9be89850b05e5893fb30482.res"
+
+[deps]
+
+source_file="res://example_godot/gohash_gpu/siphash16_multi_targets.glsl"
+dest_files=["res://.godot/imported/siphash16_multi_targets.glsl-3d530fccf9be89850b05e5893fb30482.res"]
+
+[params]
+

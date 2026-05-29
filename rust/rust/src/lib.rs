@@ -40,8 +40,6 @@ unsafe impl ExtensionLibrary for RustExtension {
 
 //TODO: quitar con confianza si compila
 
-
-
 mod ntny;
 //mod player;
 mod peerinfo;
@@ -57,15 +55,12 @@ mod shamir_godot;
 mod cuckoo_godot;
 mod infotorrent_godot;
 
-
 mod kem_godot;
 mod strsim_godot;
-
-
+mod gohash_godot;
 
 /*comentar para probar en local si conpilas con g++ de gnu
 conpilado con msvc no es necesario */
-
 
 mod xlstm_large_node;
 mod minrnn_node;

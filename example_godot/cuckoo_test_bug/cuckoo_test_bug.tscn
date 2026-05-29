@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://cuckootestbug"]
+
+[ext_resource type="Script" path="res://example_godot/cuckoo_test_bug/cuckoo_test_bug.gd" id="1_script"]
+
+[node name="cuckoo_test_bug" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 220.0
+offset_bottom = 60.0
+text = "Test 1024 x 8 repetidos"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 80.0
+offset_right = 780.0
+offset_bottom = 580.0
+scroll_active = true

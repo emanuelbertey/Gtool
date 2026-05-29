@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://cuckoopos"]
+
+[ext_resource type="Script" uid="uid://bn6i8qrkikxy1" path="res://example_godot/cuckoo_hash_text/cuckoo_hash_text_pos.gd" id="1_script"]
+
+[node name="cuckoo_hash_text_pos" type="Control" unique_id=260715318]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Panel" type="Panel" parent="." unique_id=1733673360]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LineEdit" type="LineEdit" parent="Panel" unique_id=1404670152]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 380.0
+offset_bottom = 50.0
+text = "hola mundo"
+placeholder_text = "Escribe un texto..."
+
+[node name="Button" type="Button" parent="Panel" unique_id=223094931]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 20.0
+offset_right = 560.0
+offset_bottom = 50.0
+text = "Hash + Pos + Sufijo"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel" unique_id=465100265]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 70.0
+offset_right = 780.0
+offset_bottom = 580.0
