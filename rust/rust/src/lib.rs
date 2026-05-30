@@ -67,3 +67,4 @@ mod minrnn_node;
 mod unarc_godot;
 mod grrar;
 mod gseven_godot;
+mod hf_godot;

@@ -126,3 +126,12 @@ func _on_strsim_pressed() -> void:
 	
 	prints("⭐️ DATOS AL NODO INSTANCIADO ⭐️" )
 	pass # Replace with function body.
+
+
+func _on_huggingface_pressed() -> void:
+	var data_exten = load("res://example_godot/hf_test/example_hf.tscn").instantiate()
+
+	self.add_child(data_exten)
+	
+	prints("⭐️ NODO HF INSTANCIADO ⭐️" )
+	pass # Replace with function body.

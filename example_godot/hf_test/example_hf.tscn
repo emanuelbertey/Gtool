@@ -1,0 +1,207 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8s6f7g8h9i0a"]
+
+[ext_resource type="Script" uid="uid://dr6svsftcmv5r" path="res://example_godot/hf_test/example_hf.gd" id="1_script"]
+
+[node name="ExampleHF" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12156863, 0.14509804, 0.17647059, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 20.0
+offset_right = -30.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+
+[node name="Header" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "Hugging Face Hub Client (HFGodot)"
+
+[node name="ExitBtn" type="Button" parent="VBoxContainer/Header"]
+layout_mode = 2
+text = "  Volver al Menú  "
+
+[node name="TokenSection" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/TokenSection"]
+layout_mode = 2
+text = "Token HF:"
+
+[node name="TokenInput" type="LineEdit" parent="VBoxContainer/TokenSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Ingresa tu token de escritura/lectura hf_..."
+secret = true
+
+[node name="InitBtn" type="Button" parent="VBoxContainer/TokenSection"]
+layout_mode = 2
+text = "Inicializar Cliente"
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="RepoSection" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/RepoSection"]
+layout_mode = 2
+text = "Repo ID:"
+
+[node name="RepoInput" type="LineEdit" parent="VBoxContainer/RepoSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "usuario/nombre-del-repo"
+
+[node name="Label2" type="Label" parent="VBoxContainer/RepoSection"]
+layout_mode = 2
+text = "Tipo:"
+
+[node name="RepoTypeOpt" type="LineEdit" parent="VBoxContainer/RepoSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "model"
+placeholder_text = "model, dataset o space"
+
+[node name="CheckPrivate" type="CheckBox" parent="VBoxContainer/RepoSection"]
+layout_mode = 2
+button_pressed = true
+text = "Privado"
+
+[node name="CreateRepoBtn" type="Button" parent="VBoxContainer/RepoSection"]
+layout_mode = 2
+text = "Crear Repo"
+
+[node name="DeleteRepoBtn" type="Button" parent="VBoxContainer/RepoSection"]
+layout_mode = 2
+text = "Eliminar Repo"
+
+[node name="RepoExistsBtn" type="Button" parent="VBoxContainer/RepoSection"]
+layout_mode = 2
+text = "Existe?"
+
+[node name="SearchBtn" type="Button" parent="VBoxContainer/RepoSection"]
+layout_mode = 2
+text = "Buscar"
+
+[node name="FileSection" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/FileSection"]
+layout_mode = 2
+text = "Local Path:"
+
+[node name="LocalPathInput" type="LineEdit" parent="VBoxContainer/FileSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "res://archivo.txt"
+
+[node name="Label2" type="Label" parent="VBoxContainer/FileSection"]
+layout_mode = 2
+text = "Repo Path:"
+
+[node name="PathInRepoInput" type="LineEdit" parent="VBoxContainer/FileSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "assets/archivo.txt"
+
+[node name="Label3" type="Label" parent="VBoxContainer/FileSection"]
+layout_mode = 2
+text = "Commit Msg:"
+
+[node name="CommitMsgInput" type="LineEdit" parent="VBoxContainer/FileSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Mensaje del commit"
+
+[node name="UploadBtn" type="Button" parent="VBoxContainer/FileSection"]
+layout_mode = 2
+text = "Subir"
+
+[node name="DeleteFileBtn" type="Button" parent="VBoxContainer/FileSection"]
+layout_mode = 2
+text = "Borrar"
+
+[node name="DownloadSection" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/DownloadSection"]
+layout_mode = 2
+text = "Archivo Repo:"
+
+[node name="DownloadFileInput" type="LineEdit" parent="VBoxContainer/DownloadSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "config.json"
+
+[node name="Label2" type="Label" parent="VBoxContainer/DownloadSection"]
+layout_mode = 2
+text = "Dir Local:"
+
+[node name="DownloadDirInput" type="LineEdit" parent="VBoxContainer/DownloadSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "user://downloads"
+
+[node name="DownloadBtn" type="Button" parent="VBoxContainer/DownloadSection"]
+layout_mode = 2
+text = "Descargar"
+
+[node name="FileExistsBtn" type="Button" parent="VBoxContainer/DownloadSection"]
+layout_mode = 2
+text = "Existe?"
+
+[node name="ListFilesBtn" type="Button" parent="VBoxContainer/DownloadSection"]
+layout_mode = 2
+text = "Listar Archivos"
+
+[node name="OutputPanel" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="OutputLabel" type="RichTextLabel" parent="VBoxContainer/OutputPanel"]
+layout_mode = 2
+focus_mode = 2
+text = "Inicializa el cliente para comenzar."
+selection_enabled = true
+
+[connection signal="pressed" from="VBoxContainer/Header/ExitBtn" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="VBoxContainer/TokenSection/InitBtn" to="." method="_on_btn_init_pressed"]
+[connection signal="pressed" from="VBoxContainer/RepoSection/CreateRepoBtn" to="." method="_on_btn_create_repo_pressed"]
+[connection signal="pressed" from="VBoxContainer/RepoSection/DeleteRepoBtn" to="." method="_on_btn_delete_repo_pressed"]
+[connection signal="pressed" from="VBoxContainer/RepoSection/RepoExistsBtn" to="." method="_on_btn_repo_exists_pressed"]
+[connection signal="pressed" from="VBoxContainer/RepoSection/SearchBtn" to="." method="_on_btn_search_models_pressed"]
+[connection signal="pressed" from="VBoxContainer/FileSection/UploadBtn" to="." method="_on_btn_upload_pressed"]
+[connection signal="pressed" from="VBoxContainer/FileSection/DeleteFileBtn" to="." method="_on_btn_delete_file_pressed"]
+[connection signal="pressed" from="VBoxContainer/DownloadSection/DownloadBtn" to="." method="_on_btn_download_pressed"]
+[connection signal="pressed" from="VBoxContainer/DownloadSection/FileExistsBtn" to="." method="_on_btn_file_exists_pressed"]
+[connection signal="pressed" from="VBoxContainer/DownloadSection/ListFilesBtn" to="." method="_on_btn_list_files_pressed"]
