@@ -222,10 +222,7 @@ impl HFGodot {
 
         match result {
             Ok(bytes) => {
-                let mut pba = PackedByteArray::new();
-                for &b in &bytes {
-                    pba.push_back(b);
-                }
+                let pba = PackedByteArray::from_iter(bytes.iter().copied());
                 godot_print!("HFGodot: Downloaded {} bytes range [{}-{}] from {}", bytes.len(), start, end, filename_str);
                 pba
             }
