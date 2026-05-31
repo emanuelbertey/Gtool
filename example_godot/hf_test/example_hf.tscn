@@ -202,6 +202,44 @@ selection_enabled = true
 [connection signal="pressed" from="VBoxContainer/RepoSection/SearchBtn" to="." method="_on_btn_search_models_pressed"]
 [connection signal="pressed" from="VBoxContainer/FileSection/UploadBtn" to="." method="_on_btn_upload_pressed"]
 [connection signal="pressed" from="VBoxContainer/FileSection/DeleteFileBtn" to="." method="_on_btn_delete_file_pressed"]
+[node name="RangeSection" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/RangeSection"]
+layout_mode = 2
+text = "Archivo:"
+
+[node name="RangeFilenameInput" type="LineEdit" parent="VBoxContainer/RangeSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "model.safetensors"
+
+[node name="Label2" type="Label" parent="VBoxContainer/RangeSection"]
+layout_mode = 2
+text = "Desde:"
+
+[node name="RangeStartInput" type="LineEdit" parent="VBoxContainer/RangeSection"]
+layout_mode = 2
+size_flags_horizontal = 1
+placeholder_text = "0"
+text = "0"
+
+[node name="Label3" type="Label" parent="VBoxContainer/RangeSection"]
+layout_mode = 2
+text = "Hasta:"
+
+[node name="RangeEndInput" type="LineEdit" parent="VBoxContainer/RangeSection"]
+layout_mode = 2
+size_flags_horizontal = 1
+placeholder_text = "100"
+text = "100"
+
+[node name="RangeDownloadBtn" type="Button" parent="VBoxContainer/RangeSection"]
+layout_mode = 2
+text = "Descargar Rango"
+
 [connection signal="pressed" from="VBoxContainer/DownloadSection/DownloadBtn" to="." method="_on_btn_download_pressed"]
+[connection signal="pressed" from="VBoxContainer/RangeSection/RangeDownloadBtn" to="." method="_on_btn_range_download_pressed"]
 [connection signal="pressed" from="VBoxContainer/DownloadSection/FileExistsBtn" to="." method="_on_btn_file_exists_pressed"]
 [connection signal="pressed" from="VBoxContainer/DownloadSection/ListFilesBtn" to="." method="_on_btn_list_files_pressed"]

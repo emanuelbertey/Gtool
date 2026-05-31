@@ -2,6 +2,7 @@ use godot::prelude::*;
 use hf_hub::{HFClientSync, HFClientBuilder, RepoTypeModel, RepoTypeDataset, RepoTypeSpace};
 use hf_hub::repository::AddSource;
 use std::path::PathBuf;
+use tokio::runtime::Runtime;
 
 #[derive(GodotClass)]
 #[class(base=RefCounted)]
@@ -165,6 +166,72 @@ impl HFGodot {
             Err(e) => {
                 godot_error!("HFGodot: Download failed: {:?}", e);
                 GString::from("")
+            }
+        }
+    }
+
+    #[func]
+    pub fn download_file_range(&self, repo_id: GString, filename: GString, start: i64, end: i64, token: GString, repo_type: GString) -> PackedByteArray {
+        let repo_id_str = repo_id.to_string();
+        let filename_str = filename.to_string();
+        let repo_type_str = repo_type.to_string().to_lowercase();
+        let token_str = token.to_string();
+
+        let base_url = match repo_type_str.as_str() {
+            "dataset" => "https://huggingface.co/datasets",
+            "space" => "https://huggingface.co/spaces",
+            _ => "https://huggingface.co",
+        };
+
+        let url = format!("{}/{}/resolve/main/{}", base_url, repo_id_str, filename_str);
+
+        let rt = match Runtime::new() {
+            Ok(r) => r,
+            Err(e) => {
+                godot_error!("HFGodot: Failed to create tokio runtime: {:?}", e);
+                return PackedByteArray::new();
+            }
+        };
+
+        let result = rt.block_on(async {
+            let client = reqwest::Client::builder()
+                .user_agent("Gtool-HFGodot/1.0")
+                .build()
+                .map_err(|e| format!("{:?}", e))?;
+
+            let mut req = client.get(&url)
+                .header("Range", format!("bytes={}-{}", start, end));
+
+            if !token_str.is_empty() {
+                req = req.header("Authorization", format!("Bearer {}", token_str));
+            }
+
+            let response = req.send().await
+                .map_err(|e| format!("Request failed: {:?}", e))?;
+
+            let status = response.status();
+            if !status.is_success() {
+                return Err(format!("HTTP {}: {}", status, url));
+            }
+
+            let data = response.bytes().await
+                .map_err(|e| format!("Read failed: {:?}", e))?;
+
+            Ok(data.to_vec())
+        });
+
+        match result {
+            Ok(bytes) => {
+                let mut pba = PackedByteArray::new();
+                for &b in &bytes {
+                    pba.push_back(b);
+                }
+                godot_print!("HFGodot: Downloaded {} bytes range [{}-{}] from {}", bytes.len(), start, end, filename_str);
+                pba
+            }
+            Err(e) => {
+                godot_error!("HFGodot: Range download failed: {}", e);
+                PackedByteArray::new()
             }
         }
     }

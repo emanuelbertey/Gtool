@@ -15,6 +15,10 @@ var is_initialized = false
 @onready var download_file_input = $VBoxContainer/DownloadSection/DownloadFileInput
 @onready var download_dir_input = $VBoxContainer/DownloadSection/DownloadDirInput
 
+@onready var range_start_input = $VBoxContainer/RangeSection/RangeStartInput
+@onready var range_end_input = $VBoxContainer/RangeSection/RangeEndInput
+@onready var range_filename_input = $VBoxContainer/RangeSection/RangeFilenameInput
+
 @onready var output_label = $VBoxContainer/OutputPanel/OutputLabel
 
 func _ready():
@@ -136,6 +140,33 @@ func _on_btn_download_pressed():
 		log_message("¡Archivo descargado en:\n" + result_path)
 	else:
 		log_message("Fallo al descargar el archivo.", true)
+
+func _on_btn_range_download_pressed():
+	if not is_initialized:
+		log_message("Primero debes inicializar el cliente.", true)
+		return
+	
+	var repo_id = repo_input.text.strip_edges()
+	var repo_type = repo_type_opt.text.to_lower()
+	var filename = range_filename_input.text.strip_edges()
+	var start = int(range_start_input.text.strip_edges())
+	var end = int(range_end_input.text.strip_edges())
+	var token = token_input.text.strip_edges()
+	
+	if filename.is_empty() or start < 0 or end <= start:
+		log_message("Parametros invalidos: filename, start<end requeridos.", true)
+		return
+	
+	log_message("Descargando rango [%d-%d] de '%s'..." % [start, end, filename])
+	var bytes = hf.download_file_range(repo_id, filename, start, end, token, repo_type)
+	
+	if bytes.size() > 0:
+		var preview = ""
+		for i in range(min(50, bytes.size())):
+			preview += "%02x " % bytes[i]
+		log_message("Descargados %d bytes.\nPrimeros bytes: %s" % [bytes.size(), preview.strip_edges()])
+	else:
+		log_message("Fallo al descargar el rango.", true)
 
 func _on_btn_file_exists_pressed():
 	if not is_initialized:
