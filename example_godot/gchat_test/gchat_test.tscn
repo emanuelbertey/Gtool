@@ -1,0 +1,140 @@
+[gd_scene format=3 uid="uid://gchattest"]
+
+[ext_resource type="Script" path="res://example_godot/gchat_test/gchat_test.gd" id="1_script"]
+
+[node name="gchat_test" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12, 0.15, 0.18, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 10.0
+offset_right = -20.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Header" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "Gchat - LLM Multicliente"
+
+[node name="ExitBtn" type="Button" parent="VBoxContainer/Header"]
+layout_mode = 2
+text = "Volver"
+
+[node name="ConfigSection" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="VBoxContainer/ConfigSection"]
+layout_mode = 2
+text = "Config:"
+
+[node name="PathInput" type="LineEdit" parent="VBoxContainer/ConfigSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "ruta al config.json"
+
+[node name="Label2" type="Label" parent="VBoxContainer/ConfigSection"]
+layout_mode = 2
+text = "Pass:"
+
+[node name="PassInput" type="LineEdit" parent="VBoxContainer/ConfigSection"]
+layout_mode = 2
+size_flags_horizontal = 2
+placeholder_text = "contrasena"
+secret = true
+
+[node name="LoadBtn" type="Button" parent="VBoxContainer/ConfigSection"]
+layout_mode = 2
+text = "Cargar"
+
+[node name="SaveBtn" type="Button" parent="VBoxContainer/ConfigSection"]
+layout_mode = 2
+text = "Guardar"
+
+[node name="ListProvBtn" type="Button" parent="VBoxContainer/ConfigSection"]
+layout_mode = 2
+text = "Listar Prov"
+
+[node name="ChatSection" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="VBoxContainer/ChatSection"]
+layout_mode = 2
+text = "Prov:"
+
+[node name="ProviderOpt" type="LineEdit" parent="VBoxContainer/ChatSection"]
+layout_mode = 2
+size_flags_horizontal = 1
+placeholder_text = "openrouter"
+
+[node name="Label2" type="Label" parent="VBoxContainer/ChatSection"]
+layout_mode = 2
+text = "Model:"
+
+[node name="ModelInput" type="LineEdit" parent="VBoxContainer/ChatSection"]
+layout_mode = 2
+size_flags_horizontal = 2
+placeholder_text = "openai/gpt-4o"
+
+[node name="Label3" type="Label" parent="VBoxContainer/ChatSection"]
+layout_mode = 2
+text = "Msg:"
+
+[node name="MsgInput" type="LineEdit" parent="VBoxContainer/ChatSection"]
+layout_mode = 2
+size_flags_horizontal = 4
+placeholder_text = "Escribe tu mensaje..."
+
+[node name="ChatBtn" type="Button" parent="VBoxContainer/ChatSection"]
+layout_mode = 2
+text = "Enviar"
+
+[node name="ToolsSection" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ToolsCheck" type="CheckBox" parent="VBoxContainer/ToolsSection"]
+layout_mode = 2
+text = "Habilitar Tools"
+
+[node name="OutputPanel" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="OutputLabel" type="RichTextLabel" parent="VBoxContainer/OutputPanel"]
+layout_mode = 2
+focus_mode = 2
+selection_enabled = true
+text = "Carga un config.json para comenzar."
+
+[connection signal="pressed" from="VBoxContainer/Header/ExitBtn" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="VBoxContainer/ConfigSection/LoadBtn" to="." method="_on_load_pressed"]
+[connection signal="pressed" from="VBoxContainer/ConfigSection/SaveBtn" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="VBoxContainer/ConfigSection/ListProvBtn" to="." method="_on_list_providers_pressed"]
+[connection signal="pressed" from="VBoxContainer/ChatSection/ChatBtn" to="." method="_on_chat_pressed"]
+[connection signal="toggled" from="VBoxContainer/ToolsSection/ToolsCheck" to="." method="_on_tools_toggled"]

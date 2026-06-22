@@ -1,0 +1,17 @@
+[package]
+name = "openrouter-chat"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+edgequake-llm = "0.6.25"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "time"] }
+futures = "0.3"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+aes-gcm = "0.10"
+argon2 = "0.5"
+base64 = "0.22"
+rand = "0.8"
+async-trait = "0.1"
+chrono = { version = "0.4", features = ["serde"] }

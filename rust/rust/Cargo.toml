@@ -47,6 +47,11 @@ unarc-rs = "0.6.1"
 rars = "0.1.0"
 sevenz-rust2 = { version = "0.21.0", features = ["util", "aes256"] }
 hf-hub = { version = "1.0.0-rc.1", features = ["blocking"] }
+argon2 = "0.5"
+aes-gcm = "0.10"
+base64 = "0.22"
+async-trait = "0.1"
+openrouter-chat = { path = "src/FilosoIA" }
 
 #[dependencies]
 crossterm = { version = "0.28.1", features = ["event-stream"] }
