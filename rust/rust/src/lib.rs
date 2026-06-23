@@ -68,4 +68,5 @@ mod unarc_godot;
 mod grrar;
 mod gseven_godot;
 mod hf_godot;
+mod gchat_core;
 mod gchat_godot;

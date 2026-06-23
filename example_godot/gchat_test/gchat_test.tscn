@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://gchattest"]
 
-[ext_resource type="Script" path="res://example_godot/gchat_test/gchat_test.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://bojkug5q42a72" path="res://example_godot/gchat_test/gchat_test.gd" id="1_script"]
 
-[node name="gchat_test" type="Control"]
+[node name="gchat_test" type="Control" unique_id=293360232]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1932495062]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -25,10 +25,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 10.0
-offset_right = -20.0
-offset_bottom = -10.0
+offset_left = 12.0
+offset_top = 8.0
+offset_right = -12.0
+offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -38,7 +38,7 @@ layout_mode = 2
 [node name="Title" type="Label" parent="VBoxContainer/Header"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 20
 text = "Gchat - LLM Multicliente"
 
 [node name="ExitBtn" type="Button" parent="VBoxContainer/Header"]
@@ -47,20 +47,12 @@ text = "Volver"
 
 [node name="ConfigSection" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="Label" type="Label" parent="VBoxContainer/ConfigSection"]
-layout_mode = 2
-text = "Config:"
+theme_override_constants/separation = 6
 
 [node name="PathInput" type="LineEdit" parent="VBoxContainer/ConfigSection"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "ruta al config.json"
-
-[node name="Label2" type="Label" parent="VBoxContainer/ConfigSection"]
-layout_mode = 2
-text = "Pass:"
 
 [node name="PassInput" type="LineEdit" parent="VBoxContainer/ConfigSection"]
 layout_mode = 2
@@ -78,41 +70,114 @@ text = "Guardar"
 
 [node name="ListProvBtn" type="Button" parent="VBoxContainer/ConfigSection"]
 layout_mode = 2
-text = "Listar Prov"
+text = "Listar"
+
+[node name="MgmtSection" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ProvName" type="LineEdit" parent="VBoxContainer/MgmtSection"]
+layout_mode = 2
+size_flags_horizontal = 2
+placeholder_text = "nuevo proveedor"
+
+[node name="AddProvBtn" type="Button" parent="VBoxContainer/MgmtSection"]
+layout_mode = 2
+text = "+Prov"
+
+[node name="RemProvBtn" type="Button" parent="VBoxContainer/MgmtSection"]
+layout_mode = 2
+text = "-Prov"
+
+[node name="KeyInput" type="LineEdit" parent="VBoxContainer/MgmtSection"]
+layout_mode = 2
+size_flags_horizontal = 4
+placeholder_text = "nueva API key"
+
+[node name="AddKeyBtn" type="Button" parent="VBoxContainer/MgmtSection"]
+layout_mode = 2
+text = "+Key"
+
+[node name="RemKeyBtn" type="Button" parent="VBoxContainer/MgmtSection"]
+layout_mode = 2
+text = "-Key"
+
+[node name="ModelInputMgmt" type="LineEdit" parent="VBoxContainer/MgmtSection"]
+layout_mode = 2
+size_flags_horizontal = 2
+placeholder_text = "nuevo modelo"
+
+[node name="AddModelBtn" type="Button" parent="VBoxContainer/MgmtSection"]
+layout_mode = 2
+text = "+Model"
+
+[node name="RemModelBtn" type="Button" parent="VBoxContainer/MgmtSection"]
+layout_mode = 2
+text = "-Model"
 
 [node name="ChatSection" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 6
 
-[node name="Label" type="Label" parent="VBoxContainer/ChatSection"]
+[node name="LabelProv" type="Label" parent="VBoxContainer/ChatSection"]
 layout_mode = 2
 text = "Prov:"
 
-[node name="ProviderOpt" type="LineEdit" parent="VBoxContainer/ChatSection"]
+[node name="ProvList" type="ItemList" parent="VBoxContainer/ChatSection"]
 layout_mode = 2
-size_flags_horizontal = 1
-placeholder_text = "openrouter"
+size_flags_horizontal = 2
+custom_minimum_size = Vector2(0, 80)
+max_columns = 1
+auto_height = true
 
-[node name="Label2" type="Label" parent="VBoxContainer/ChatSection"]
+[node name="LabelModel" type="Label" parent="VBoxContainer/ChatSection"]
 layout_mode = 2
 text = "Model:"
 
 [node name="ModelInput" type="LineEdit" parent="VBoxContainer/ChatSection"]
 layout_mode = 2
 size_flags_horizontal = 2
-placeholder_text = "openai/gpt-4o"
+placeholder_text = "modelo"
 
-[node name="Label3" type="Label" parent="VBoxContainer/ChatSection"]
+[node name="ModelList" type="ItemList" parent="VBoxContainer/ChatSection"]
 layout_mode = 2
-text = "Msg:"
+size_flags_horizontal = 2
+custom_minimum_size = Vector2(0, 80)
+max_columns = 1
+auto_height = true
 
-[node name="MsgInput" type="LineEdit" parent="VBoxContainer/ChatSection"]
+[node name="LabelKey" type="Label" parent="VBoxContainer/ChatSection"]
 layout_mode = 2
-size_flags_horizontal = 4
+text = "Key:"
+
+[node name="KeyCustom" type="LineEdit" parent="VBoxContainer/ChatSection"]
+layout_mode = 2
+size_flags_horizontal = 2
+placeholder_text = "key manual (opcional)"
+
+[node name="LabelFmt" type="Label" parent="VBoxContainer/ChatSection"]
+layout_mode = 2
+text = "Fmt:"
+
+[node name="FormatOpt" type="OptionButton" parent="VBoxContainer/ChatSection"]
+layout_mode = 2
+size_flags_horizontal = 1
+text = "chat/completions"
+
+[node name="InputSection" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="MsgInput" type="TextEdit" parent="VBoxContainer/InputSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_minimum_size = Vector2(0, 64)
 placeholder_text = "Escribe tu mensaje..."
 
-[node name="ChatBtn" type="Button" parent="VBoxContainer/ChatSection"]
+[node name="ChatBtn" type="Button" parent="VBoxContainer/InputSection"]
 layout_mode = 2
+size_flags_vertical = 0
 text = "Enviar"
 
 [node name="ToolsSection" type="HBoxContainer" parent="VBoxContainer"]
@@ -120,21 +185,48 @@ layout_mode = 2
 
 [node name="ToolsCheck" type="CheckBox" parent="VBoxContainer/ToolsSection"]
 layout_mode = 2
-text = "Habilitar Tools"
+text = "Tools"
 
-[node name="OutputPanel" type="PanelContainer" parent="VBoxContainer"]
+[node name="StreamCheck" type="CheckBox" parent="VBoxContainer/ToolsSection"]
+layout_mode = 2
+text = "Stream"
+button_pressed = true
+
+[node name="ThinkingCheck" type="CheckBox" parent="VBoxContainer/ToolsSection"]
+layout_mode = 2
+text = "Thinking"
+
+[node name="BudgetInput" type="LineEdit" parent="VBoxContainer/ToolsSection"]
+layout_mode = 2
+size_flags_horizontal = 1
+placeholder_text = "budget tokens"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="OutputLabel" type="RichTextLabel" parent="VBoxContainer/OutputPanel"]
+[node name="Conversation" type="RichTextLabel" parent="VBoxContainer/ScrollContainer"]
 layout_mode = 2
 focus_mode = 2
 selection_enabled = true
+bbcode_enabled = true
 text = "Carga un config.json para comenzar."
+scroll_active = false
+
+[node name="StreamTimer" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = false
 
 [connection signal="pressed" from="VBoxContainer/Header/ExitBtn" to="." method="_on_exit_pressed"]
 [connection signal="pressed" from="VBoxContainer/ConfigSection/LoadBtn" to="." method="_on_load_pressed"]
 [connection signal="pressed" from="VBoxContainer/ConfigSection/SaveBtn" to="." method="_on_save_pressed"]
 [connection signal="pressed" from="VBoxContainer/ConfigSection/ListProvBtn" to="." method="_on_list_providers_pressed"]
-[connection signal="pressed" from="VBoxContainer/ChatSection/ChatBtn" to="." method="_on_chat_pressed"]
+[connection signal="pressed" from="VBoxContainer/MgmtSection/AddProvBtn" to="." method="_on_add_prov_pressed"]
+[connection signal="pressed" from="VBoxContainer/MgmtSection/RemProvBtn" to="." method="_on_rem_prov_pressed"]
+[connection signal="pressed" from="VBoxContainer/MgmtSection/AddKeyBtn" to="." method="_on_add_key_pressed"]
+[connection signal="pressed" from="VBoxContainer/MgmtSection/RemKeyBtn" to="." method="_on_rem_key_pressed"]
+[connection signal="pressed" from="VBoxContainer/InputSection/ChatBtn" to="." method="_on_chat_pressed"]
 [connection signal="toggled" from="VBoxContainer/ToolsSection/ToolsCheck" to="." method="_on_tools_toggled"]
+[connection signal="item_selected" from="VBoxContainer/ChatSection/ModelList" to="." method="_on_model_selected"]
+[connection signal="pressed" from="VBoxContainer/MgmtSection/AddModelBtn" to="." method="_on_add_model_pressed"]
+[connection signal="pressed" from="VBoxContainer/MgmtSection/RemModelBtn" to="." method="_on_rem_model_pressed"]
